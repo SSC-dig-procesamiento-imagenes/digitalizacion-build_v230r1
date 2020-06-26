@@ -1,0 +1,189 @@
+<html>
+<head>
+	<meta charset="utf-8">
+</head>
+<body>
+<div ng-controller="estadisticasValidadoresController">
+	<form role="form" name="form" novalidate>
+		<div class="row centerBox">
+			<div class="col-xs-12 col-md-6">
+				<div class="box box-danger">
+					<div class="box-header with-border text-center">
+						<h3 class="box-title">Parámetros de búsqueda</h3>
+						<div class="box-tools pull-right">
+							<button id="x0" type="button" class="btn btn-box-tool"
+									data-widget="collapse">
+								<i class="fa fa-minus"></i>
+							</button>
+						</div>
+					</div>
+					<div class="box-body">
+						<!-- PARAMETROS DE BÚSQUEDA -->
+						
+						<div class="row" ng-show ="showParametros">
+							<div class="col-md-6">
+								<div class="form-group" ng-class="{'has-error': !form.$pristine && form.fInicio.$error.required &&
+                                                                               form.fInicio.$invalid && !form.fInicio.$pristine}">
+									<label for="fInicio">
+										Fecha inicial:
+									</label>
+									<div class="input-group">
+										<div class="input-group-addon">
+											<i class="fa fa-calendar-check-o"></i>
+										</div>
+										<input class="form-control pull-right inputFecha" id="fInicio"
+											   date-picker
+											   name="fInicio" elemento="'fFin'"
+											   fecha mindate="fechaInicial"
+											   ng-model="fechaInicial"
+										/>
+									</div>
+									<span ng-show="!validacionFechasOk">
+                                                    <span style="color: red;">Fecha inválida</span>
+                                                </span>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group" ng-class="{'has-error': !form.$pristine && form.fFin.$error.required &&
+                                                                                form.fFin.$invalid && !form.fFin.$pristine}">
+									<label for="fFin">
+										Fecha final:
+									</label>
+									<div class="input-group">
+										<div class="input-group-addon">
+											<i class="fa fa-calendar-check-o"></i>
+										</div>
+										<input class="form-control pull-right inputFecha" id="fFin"
+											   date-picker
+											   fecha maxdate="fechaFinal"
+											   elemento="'fInicio'"
+											   ng-model="fechaFinal"
+										/>
+									</div>
+									<span ng-show="!validacionFechasOk">
+                                                    <span style="color: red;">Fecha inválida</span>
+                                                </span>
+								</div>
+							</div>
+						
+						</div>
+						<div class="row">
+							<div class="col-md-12" align="center">
+								<button type="button" class="btn btn-danger" ng-click="clickBontonBuscar()" tooltip="Buscar datos">
+									Buscar
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			
+			</div>
+		</div>
+		<div class="row centerBox" ng-show="hayEstadisticas">
+			<div class="col-xs-12 col-md-12">
+				<div class="box box-danger">
+					<ul class="nav nav-tabs preventClic">
+						<li role="presentation" class="tabBox"
+							ng-class="{'active border-box':mostrarTabla}">
+							<a ng-click="changeViewTab('tabla')">Tabla de validadores</a>
+						</li>
+						<li role="presentation" class="tabBox"  ng-show="listado && listado.length > 0"
+							ng-class="{'active border-box':mostrarBarras}">
+							<a ng-click="changeViewTab('barras')">Gráfico de barras</a>
+						</li>
+						<li role="presentation" class="tabBox" ng-show="listado && listado.length > 0"
+							ng-class="{'active border-box':mostrarPastel}">
+							<a ng-click="changeViewTab('pastel')">Gráfico de pastel</a>
+						</li>
+					</ul>
+					<!--Tabla de resultados:-->
+					<div class="box-body " ng-show="mostrarTabla">
+						<div class="box-header with-border text-center">
+							<h3 class="box-title">Estadísticas de los validadores.</h3>
+							<div class="box-tools pull-right">
+								<button id="x" type="button" class="btn btn-box-tool"
+										data-widget="collapse">
+									<i class="fa fa-minus"></i>
+								</button>
+							</div>
+						</div>
+						<div class="box-header row">
+							<div class="col-md-4">
+								<h3 class="box-title">Registros encontrados: {{(listado |  filter : view.searchSomething).length | number}}</h3>
+							</div>
+							<div class="col-md-4"></div>
+							<div class="col-md-4">
+								<div class="input-group">
+									<input id="searchSomething" type="text" class="form-control"
+										   placeholder="Buscar por filtro"
+										   ng-model="view.searchSomething">
+									<span class="input-group-addon"><i class="fa fa-search"></i></span>
+								</div>
+							</div>
+						
+						</div>
+						<div class="box-body">
+							<div class="row">
+								<table id="tabla_estadistica" class="table table-hover  header-fixed"
+									   data-target="#myModal">
+									<thead>
+									<tr>
+										<th sort order="'usuario'" by="order" reverse="reverse" class="text-center">USUARIO</th>
+										<th sort order="'nombres'" by="order" reverse="reverse" class="text-center">NOMBRE(S) Y APELLIDO(S)</th>
+										<th sort order="'email'" by="order" reverse="reverse" class="text-center">EMAIL</th>
+										<th sort order="'aceptadas'" by="order" reverse="reverse" class="text-center">ACEPTADAS</th>
+										<th sort order="'rechazadas'" by="order" reverse="reverse" class="text-center">RECHAZADAS</th>
+										<th sort order="'pospuestas'" by="order" reverse="reverse" class="text-center">POSPUESTAS</th>
+										<th sort order="'total'" by="order" reverse="reverse" class="text-center">TOTAL</th>
+									</tr>
+									</thead>
+									<tbody>
+									<tr dir-paginate="stat in listado | orderBy:order:reverse | filter:view.searchSomething | itemsPerPage: view.rowsPerPage">
+										<td class="text-center">{{stat.usuario}}</td>
+										<td class="text-center">{{stat.nombres}} </td>
+										<td class="text-center">{{stat.email}}</td>
+										<td class="text-center">{{stat.aceptadas}}</td>
+										<td class="text-center">{{stat.rechazadas}}</td>
+										<td class="text-center">{{stat.pospuestas}}</td>
+										<td class="text-center">{{stat.total}}</td>
+									</tr>
+									<tr ng-if="(listado | filter:view.searchSomething).length < 1"><td colspan="8" class="text-center"><h4>No se encontraron coincidencias</h4></td></tr>
+									</tbody>
+								</table>
+							</div>
+							<div class="container-fluid">
+								<div class="fixed-table-pagination" style="display:block;">
+									<rows-per-page rows="view.rowsPerPage" filtro="view.searchSomething" array="listado"></rows-per-page>
+									<div class="pull-right pagination">
+										<dir-pagination-controls class="pagination"></dir-pagination-controls>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--Gráfico de barras:-->
+					<div class="box-body " ng-show="listado && listado.length > 0 && mostrarBarras">
+						<div class="row">
+							<div class="col-md-12 pre-scrollable" align="center">
+								<div id="mainEcharts" style="width: 950px; height:300px;"></div>
+							</div>
+						</div>
+					
+					</div>
+					<!--Gráfico de pastel:-->
+					<div class="box-body " ng-show="listado && listado.length > 0 && mostrarPastel">
+						<div class="col-md-12 pre-scrollable" align="center">
+							<div id="pieEcharts" style="width: 950px; height:300px;"></div>
+						</div>
+					
+					</div>
+				</div>
+			
+			</div>
+		</div>
+	
+	</form>
+
+</div>
+</body>
+</html>

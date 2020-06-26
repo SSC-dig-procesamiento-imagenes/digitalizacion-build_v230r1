@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="es">
+
+	<head>
+		<meta charset="UTF-8">
+		<title>Paso 1</title>
+<script>
+$(document).on('click', '#crudCampos', function() {
+        $('#datosCrudCampos').modal('show');
+    });
+
+</script>
+
+
+	</head>
+	<body>
+		<div class="row">
+
+		
+				<div class="col-md-12">
+					<div class="row">
+					
+						
+<div class="col-md-12" >
+			
+					
+	<div class="col-md-8" >
+ 
+	 <!--Area de Canvas--> 
+	
+ 
+		<fieldset class="scheduler-border">
+ 
+			<legend class="scheduler-border">Plantilla SeleccionadaXX
+			
+			</legend>
+			<div id="Contenedor" style="overflow: scroll ;max-height: 560px; width:700px;">
+				<div id="contenedorCanvas">
+			<canvas id="canvas3" width="{{anchoBoleta}}" height=" {{altoBoleta}}"
+			style="background-image: url('{{imgBoleta}}'); background-size:{{anchoBoleta}}  {{altoBoleta}};"
+					>
+
+					Tu navegador no soporta canvas 3
+				  </canvas>
+				</div>
+			  
+			  </div>
+ 
+		</fieldset>
+	  
+
+ <!--Area de canvas-->
+ </div>
+  
+				 <!--Area de Canvas--> 
+				
+		 <div class="col-md-4">  
+			<form name="camposForm" novalidate>
+			 <div class="col-md-12"> 
+				<fieldset class="scheduler-border">
+			 
+					<legend class="scheduler-border">{{dataCrudStep.stepThree.flagEdit==true?'Actualizar Campo':'Agregar Campo'}}
+					
+			  </legend>
+	 <div class="row">	
+		<!--SEPARADOR-->
+				<div class="col-md-12" align="left">
+					<div class="form-group"
+						ng-class="{ 'has-error' : camposForm.name.$invalid && !camposForm.name.$pristine }">
+						<div align="left">
+							<label for="name">*Nombre:</label>
+						</div>
+						<div class="input-group">
+							<span class="input-group-addon"> <i
+								class="fa fa-shield"></i>
+							</span> <input maxlength="50" type="text" 
+								ng-model="dataCrudStep.stepThree.camposVO.nombre" name="name" id="name"
+								class="form-control" ng-required="true">
+						</div>
+						<p
+							ng-show="camposForm.name.$invalid && !camposForm.name.$pristine"
+							class="help-block">El nombre es requerido</p>
+					</div>
+				</div>
+				<!--SEPARADOR-->
+</div>				
+<div class="row">
+				<!--SEPARADOR-->
+				<div class="col-md-6">
+					<div class="form-group"
+					 ng-class="{ 'has-error' : camposForm.respuesta.$error.required && camposForm.respuesta.$dirty }" >
+						<label for="radar">Respuesta:</label>
+						<div class="input-group">
+							<div class="input-group-addon">
+								<i class="fa fa-flask"></i>
+							</div>
+							<select class="form-control select2" select2 name="respuesta" id="respuesta" ng-required="true"
+									ng-change="cambiarRespuesta(dataCrudStep.stepThree.camposVO.camposVO.respuesta)"
+									ng-options="x as x.nombre for x in listRespuesta" 
+									ng-model="dataCrudStep.stepThree.camposVO.respuesta">
+									<option value="">{{'APP.Base.mensaje.seleccioneOpcion' | translate}}</option>
+
+							</select>
+						</div>
+						<p
+						ng-show="camposForm.respuesta.$error.required && camposForm.respuesta.$dirty"
+						class="help-block">La respuesta es requerida</p>
+					</div>
+				</div>
+			<!--SEPARADOR-->
+	
+						
+			<div class="col-md-6">
+				<div class="form-group"  
+					ng-class="{ 'has-error' : camposForm.orientacion.$error.required && camposForm.orientacion.$dirty }">
+					<label for="radar">Orientacion:</label>
+					<div class="input-group">
+						<div class="input-group-addon">
+							<i class="fa fa-flask"></i>
+						</div>
+						<select class="form-control select2" select2 name="orientacion" id="orientacion" ng-required="true"
+							
+								ng-options="x as x.nbOri for x in listOrientacion" 
+								ng-model="dataCrudStep.stepThree.camposVO.orientacion">
+								<option value="">{{'APP.Base.mensaje.seleccioneOpcion' | translate}}</option>
+
+						</select>
+					</div>
+					<p
+					ng-show="camposForm.orientacion.$error.required && camposForm.orientacion.$dirty"
+					class="help-block">La orientacion es requerido</p>
+				</div>
+			</div>
+			</div>
+
+			<div class="row">	
+							<!--SEparador-->
+					
+							<div class="col-md-6">
+								<div class="form-group"  ng-class="{ 'has-error' : camposForm.cdColor.$invalid && !camposForm.cdColor.$pristine }" >
+									<label><span class="asteriskReq">*</span>Color</label>
+									<div class="input-group">
+										<div class="input-group-addon">
+											<i class="fa fa-thumb-tack"></i>
+										</div>
+										<input ng-change="cambiarColorTrazo" type="text" class="form-control" name="cdColor" id="cdColor" required color-picker color-picker-model="dataCrudStep.stepThree.camposVO.cdColor" ng-model="dataCrudStep.stepThree.camposVO.cdColor" ng-style="{background:dataCrudStep.stepThree.camposVO.cdColor}" />
+									</div>
+									<p
+									ng-show="camposForm.cdColor.$invalid && !camposForm.cdColor.$pristine"
+									class="help-block">El color es requerido</p>
+
+								</div>
+							</div>
+							<!--separador-->
+								<!--SEPARADOR-->
+								<div class="col-md-6">
+									<div class="form-group"   ng-class="{ 'has-error' : dataCrudStep.stepThree.flagCordenadas===''}">
+									<label for="example1">*Area Seleccionada:</label><span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="top" title="{{txtMensaje}}" data-original-title=""></span>
+									<div class="input-group">
+									<div class="input-group-addon">
+									<i class="fa fa-object-group"></i>
+									</div>
+									<input ng-disabled="true"class="form-control" ng-required="true"  name="cordenadas" id="cordenadas"
+									type="text"  value="{{dataCrudStep.stepThree.camposVO.ix|number:0}},{{dataCrudStep.stepThree.camposVO.iy|number:0}},{{dataCrudStep.stepThree.camposVO.fx|number:0}},{{dataCrudStep.stepThree.camposVO.fy|number:0}}">
+									<div class="input-group-btn">
+									<label class="btn btn-danger" ng-disabled="dataCrudStep.stepThree.flagCordenadas===''";
+									ng-click="removeTrazoBeforeAdd(dataCrudStep.stepThree.camposVO)"
+									uib-tooltip="Eliminar Trazo">
+									<i class="fa fa-eraser"></i>
+									</label>
+									</div>
+									</div>
+									<div ng-show="dataCrudStep.stepThree.flagCordenadas===''">
+									<span style="color:#dd4b39">
+									Cordenadas Necesarias
+									</span>
+									</div>
+									</div>
+									</div>
+								<!--SEPARADOR-->
+				</div>
+						
+
+ <div class="row">	
+	<div class="col-md-6" align="left">
+		<div class="form-group"
+			ng-class="{ 'has-error' : camposForm.marca.$invalid && !camposForm.marca.$pristine }">
+			<div align="left">
+				<label for="name">*Radio Marca:</label>
+			</div>
+			<div class="input-group">
+				<span class="input-group-addon"> <i
+					class="fa fa-shield"></i>
+				</span> <input maxlength="50" type="number" 
+					ng-model="dataCrudStep.stepThree.camposVO.marca" ng-change="reCrearTrazoSinAgregar()" name="marca" id="marca"
+					class="form-control" ng-required="true" value="0">
+			</div>
+			<p
+				ng-show="camposForm.marca.$invalid && !camposForm.marca.$pristine"
+				class="help-block">la marca es requerida requerido</p>
+		</div>
+	</div>										
+				<div  ng-show="!dataCrudStep.stepThree.flagEdit"  class="col-md-6" align="center">
+					<br>
+					<button id="crudCamposAdd" type="button" class="btn btn-primary btn-sm pull-left ng-isolate-scope" ng-click="addCampo(dataCrudStep.stepThree.camposVO,camposForm)" tooltip="Nuevo Campo" tooltip-placement="left" data-original-title="" title="">
+						<span class="fa fa-plus" aria-hidden="true"></span>
+					
+				</div>
+				<div  ng-show="dataCrudStep.stepThree.flagEdit" class="col-md-6" align="center">
+				<button  id="crudCamposEdit" type="button" class="btn btn-primary btn-sm pull-left ng-isolate-scope" ng-click="onEdit(dataCrudStep.stepThree.camposVO,'afterAdd',camposForm)" tooltip="Actualizar Campo" tooltip-placement="left" data-original-title="" title="">
+					<span class="fa fa-check" aria-hidden="true"></span>
+				 </button>
+				 </div>
+				<!--SEPARADOR-->
+ </div>
+				</fieldset>
+			 </div>
+			</form>
+
+
+ <div class="col-md-12">
+					<fieldset class="scheduler-border">
+			 
+						<legend class="scheduler-border">Campos Asignados
+						
+				  </legend>
+				
+<!--Empieza Tabla-->
+
+<section class="content" >
+	<div class="row">
+		<div class="col-md-12">
+			<div class="box box-danger">
+				<div class="box-body">
+					<div class="row centerBox">
+						<section class="col-md-12">
+							<div class="col-md-12">
+								<div>
+									<div class="box-header col-md-12">
+										<div class="col-md-4 col-xs-12">
+											<p class="font-weight-bold">
+										   Num: {{ (dataCrudStep.stepThree.listCamposVO | filter:general.filter).length }}
+											</p>
+										</div>
+										<div class="col-md-7 form-group">
+											<div class="row">
+												<div class="col-md-offset-1 col-md-12 col-xs-12">
+													<div class="input-group">
+														<input id="searchsomething" type="text" class="form-control ng-pristine ng-untouched ng-valid ng-empty" placeholder="Buscar por filtro" ng-model="general.filter"> <span class="input-group-addon"><i class="fa fa-search"></i></span>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="box-body table-responsive no-padding">
+										<table id="myTable" class="table table-hover header-fixed">
+											<thead>
+												<tr>
+													<th class="wrap-text" sort order="'nombre'" by="order" reverse="reverse">NOMBRE</th>
+													<th class="wrap-text">ACCION</th>
+													
+													
+												</tr>
+											</thead>
+											<tbody>
+												<tr dir-paginate="x in dataCrudStep.stepThree.listCamposVO | filter:general.filter | orderBy:order:reverse | itemsPerPage: view.rowsPerPageTwo"  pagination-id="dir2">
+													<td class="center">
+													<label class="btn-xs" style="color: #ffffff; background-color:{{x.cdColor}};border: 0;">
+														{{x.nombre}}
+													</label>
+													</td>
+												<td class="center">
+													<a class="btn btn-primary btn-sm" ng-click="validarCambios(x,camposForm)"><i class="fa fa-pencil fa-lg"></i> </a>
+													<a class="btn btn-primary btn-sm" ng-click="removeCampo(x)"><i class="fa fa-trash-o fa-lg"></i> </a>
+											</td>
+											
+													
+											
+												</tr>
+												<tr ng-if="(dataCrudStep.stepThree.listCamposVO | filter:general.filter).length < 1">
+													<td colspan="5" class="text-center">
+														<h4>No se han asignado campos</h4>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<div class="container-fluid">
+										<div class="fixed-table-pagination" style="display: block;">
+											<div class="pull-right pagination">
+												<dir-pagination-controls class="pagination" max-size="3"   pagination-id="dir2"></dir-pagination-controls>
+											</div>
+										</div>
+									</div>
+		</div>
+	</div>
+</section>
+
+<!--Termina tabla-->
+
+				
+			 
+					</fieldset>
+				</div>
+
+			 <!--Area de canvas-->
+		
+			 </div>
+
+			<div class="row">
+				<div class="col-xs-12 col-md-2">
+				<div class="col-md-4">
+					<div class="row">
+						<div class="col-md-12">
+							<p> </p>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<p> </p>
+						</div>
+					</div>
+					<div class="row">
+						<div id="images">
+							<div class="col-md-10">
+								<img ng-src="{{imgBoletaPreview}}" alt="Anverso" style="width: 100px;height: 130px;"
+									 class="center-block">
+							
+							</div>
+						</div>
+						</div>
+						</div>
+					</div>
+				</div>
+
+			</div>	
+			 <div class="row centerCol">
+				<div class="col-xs-12 col-md-2">
+					<div class="centerRow">
+						<button class="btn btn-danger" wz-previous  ng-click="goBack(dataCrudStep.stepThree.listCamposVO)">
+							<i class="fa fa-arrow-left"></i>
+						</button>
+						<button class="btn btn-default" wz-reset>
+							<i class="fa fa-refresh"></i>
+						</button>
+						<button class="btn btn-danger" ng-click="saveStepThree()">
+							Guardar
+						</button>
+					</div>
+				</div>
+			</div>
+		 </div>
+										
+					</div>
+			
+				</div>
+			
+
+	</body>
+</html>

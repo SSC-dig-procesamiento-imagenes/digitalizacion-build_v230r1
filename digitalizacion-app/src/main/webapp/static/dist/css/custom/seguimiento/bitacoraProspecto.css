@@ -1,0 +1,207 @@
+
+/*Estilos para detalle prospecto*/
+.nombreProspecto{
+	color: #607D8B;
+	font-weight: 600;
+}
+.estatusProspecto{
+	color: #263238;
+	font-weight: 600;
+	cursor: default;
+}
+
+
+/*APARECER BOTON DE EDITAR STATUS*/
+.editStatus{
+	padding: 0.7143rem 1.071rem 0.7143rem 0.3571rem !important;
+/* 	display: none; */
+	color: #E92D3D !important;
+}
+.estatusProspecto:hover .editStatus{
+	display: initial !important;
+	transition: all .3s ease-out;
+}
+.editStatus a{
+	color: #E92D3D;
+}
+
+.detalleBitacora{
+	color: #455A64;
+	font-weight: 800;
+}
+.detalleBitacora > i{
+	color: #009688;
+}
+.textoDetalle{
+	margin-left: 1.071rem;
+	font-weight: bold;
+	color: #607D8B;
+	font-style: italic;
+}
+.evidenciaBitacora{
+	/*text-align: center;*/
+}
+.evidenciaBitacora ul li > i{
+	font-size: 2.143rem;
+	padding: 0.7143rem;
+}
+.evidenciaBitacora ul{
+	list-style: none;
+}
+.evidenciaBitacora ul li{
+	display: inline-block;
+	margin-right: 1.071rem;
+}
+.dowloadEvidencia{
+	cursor: pointer;
+	text-align: center;
+	color: #607D8B;
+}
+.uploadEvidencia{
+	padding: 0.3571rem;
+	font-size: 1.143rem;
+	background-color: #E92D3D;
+	color: #FAE2E4;
+	margin-left: 0.7143rem;
+	border-radius: 50%;
+}
+.uploadEvidencia:hover{
+	color: #fff;
+}
+
+
+/*FORMULARO DE CARGA DE ARCHIVO*/
+.addremoveItems{
+	padding: 0.3571rem 0.7143rem;
+	color: #fff;
+	border-radius: 50%;
+	box-shadow: 1px 1px 0.2143rem #c1c1c1;
+	cursor: pointer;
+}
+.addItem{
+	background-color: #00BCD4;
+	margin-right: 0.7143rem;
+}
+.removeItem{
+	background-color: #E92D3D;
+}
+.contenedorArchivos{
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+}
+
+/*ESTILO DEL INPUT TIPO FILE*/
+.inputfile{
+	display: none !important;
+}
+.archivoItem{
+	width: 7.143rem;
+	text-align: center;
+	cursor: pointer;
+}
+.archivoItem i{
+	padding: 0.7143rem;
+	font-size: 3.571rem;
+	background-color: #EEEEEE;
+	border-radius: 50%;
+	box-shadow: 1px 1px 0.2143rem #c1c1c1;
+}
+.archivoItem span{
+	display: block;
+}
+
+
+/*GALERIA MODAL*/
+.cont-itemGallery{
+	height: 7.143rem;
+	margin-bottom: 1.429rem;
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+.cont-itemGalleryBig{
+	width: 100%;
+	height: 31.79rem;
+}
+.itemBig{
+	width: 100%;
+	height: 31.79rem;
+	display: flex !important;
+	flex-wrap: wrap !important;
+	align-items: center !important;
+	justify-content: center !important;
+}
+.itemGallery{
+	height: 5.714rem;
+	box-shadow: 1px 1px 0.2143rem #c1c1c1;
+}
+.itemGallery a{
+	border-bottom: 0;
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+	height: 100%;
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.fechaItem{
+	width: 100%;
+	text-align: center;
+	font-weight: bold;
+	background-color: #EEEE;
+	box-shadow: 1px 1px 0.2143rem #c1c1c1;
+}
+
+.tituloItem{
+	width: 100%;
+	position: absolute;
+	top: 0;
+	background-color: #EEEE;
+	text-align: center;
+	font-weight: bold !important;
+}
+.dowloadEvidenciaModal{
+	position: absolute;
+	bottom: 0;
+	left: 42%;
+}
+/*.btnFixed{
+	position:fixed;
+	z-index:1000;
+	top:60px;
+	right: 25px;
+}*/
+/*SCROLL DEL CONTENEDOR DE LA BITACORA*/
+.contScroll{
+	height: calc(100vh - 24.29rem) !important;
+	padding-top: 0.7143rem;
+	border-top: 1px #E6E7E9 solid;
+	border-bottom: 1px #E6E7E9 solid;
+}
+/*SCROLL DEL CONTENEDOR DEL MODAL EVIDENCIAS*/
+.contEvidenciaScroll{
+	height: 31.79rem !important;
+}
+
+
+.hide-bullets {
+    list-style: none;
+    margin-left: -2.857rem;
+    margin-top: 1.429rem;
+}
+
+.thumbnail {
+    padding: 0;
+}
+
+.carousel-inner>.item>img, .carousel-inner>.item>a>img {
+    width: 100%;
+}
+
+textarea{
+	resize: none;
+}

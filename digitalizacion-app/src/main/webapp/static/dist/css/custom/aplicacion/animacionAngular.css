@@ -1,0 +1,117 @@
+
+   /*-----------------------------------------------------------------------------*/
+  /*----------------------- enter && leave aplican para: ----------------------- */
+ /* ------ ng-repeat | ng-view | ng-include | ng-switch | ng-if | ng-message ---*/
+/*-----------------------------------------------------------------------------*/
+
+/*ANIMACIÓN PARA MOSTRAR Y OCULTAR CONTENIDO CON NG-IF*/
+.ngIfAnimate.ng-enter {
+	animation: ngAnimateIn .3s;
+}
+.ngIfAnimate.ng-leave{
+	animation: ngAnimateOut .3s;
+}
+
+/* Animación para validar mensajes */
+.ngMessageValidAnimate.ng-enter {
+	animation: tada .7s;
+}
+
+.ngOnlyEnterApp.ng-enter {
+	animation: zoomIn .7s;
+}
+.ngOnlyEnter.ng-enter { /*Excepción para animación solo en las entradas*/
+	animation: ngAnimateIn .5s;
+}
+.ngOnlyLeave{ /*Excepción para animación solo en las salidas*/
+	animation: ngAnimateOut .5s;
+}
+/* ANIMACIÓN PARA EL LOGIN Y EL LOGOUT */
+.animateLogin.ng-enter{
+    animation: flipInY .7s;
+}
+
+/* Animación en la entrada de las vistas */
+.animateVistas.ng-enter{
+	animation: ngAnimateIn .3s;
+}
+
+/* ANIMACIÓN BOTON ARRIBA */
+.scrollup{
+	animation: rubberBand .7s;
+}
+
+/* ANIMACIÓN PARA LA MALLA DE TEMAS MÓDULO CONFIGURACIÓN */
+.mallaAnimate.ng-enter {
+	animation: fadeIn .5s;
+}
+.mallaAnimate.ng-leave {
+	animation: fadeOut .3s;
+}
+
+/* ANIMACIÓN PARA LOS MENUS DE CERRAR SESIÓN Y CAMBIAR TAMAÑOS */
+.animacionMenus.ng-enter {
+	animation: slideInRight .2s;
+}
+.animacionMenus.ng-leave {
+	animation: flipOutX .3s;
+}
+
+/* Animación para los tooltips */
+.tooltip-inner,
+.tooltip.top .tooltip-arrow,
+.tooltip.right .tooltip-arrow,
+.tooltip.bottom .tooltip-arrow,
+.tooltip.left .tooltip-arrow {
+	animation: zoomIn .2s
+}
+
+/* Animación de botones */
+.ngBtnAnimate.ng-enter{
+	animation: bounceIn .7s;
+}
+.ngBtnAnimate.ng-leave{
+	animation: bounceOut .5s;
+}
+
+/* ANIMACIÓN PARA EL MODAL DEL TOKEN INACTIVIDAD */
+.ngTokenAnimate.ng-enter{
+	animation: ngAnimateIn .5s;
+}
+.ngTokenAnimate.ng-leave{
+	animation: ngAnimateIn 1s;
+}
+
+/* ANIMACIÓN PARA LOS MODALES */
+.modal-dialog {
+	animation: ngAnimateIn .2s;
+}
+
+   /*---------------------------------------------------------------------------*/
+  /*------------------ hide-remove && hide-add aplican para: ----------------- */
+ /* ------ ng-class | ng-show | ng-hide | ng-model | form | ng-messages ------*/
+/*---------------------------------------------------------------------------*/
+
+/*ANIMACIÓN PARA MOSTRAR Y OCULTAR CONTENIDO CON NG-SHOW*/
+.ngShowAnimate.ng-hide-remove{
+	animation: 0.3s ngAnimateIn;
+}
+.ngShowAnimate.ng-hide-add{
+	animation: 0.3s ngAnimateOut;
+}
+
+/* ANIMACIÓN DE ENTRADA O SALIDA PARA CUAQUIER ELEMENTO */
+.animateShowIn.ng-hide-remove {
+	animation: ngAnimateIn .3s;
+}
+.animateShowOut.ng-hide-add {
+	animation: ngAnimateOut .3s;
+}
+
+/* Animación para el icono de FullScreen */
+.ngFullScreenAnimate.ng-hide-remove{
+	animation: rubberBand 1s;
+}
+.ngFullScreenAnimate.ng-hide-add{
+	animation: fadeOut .1s;
+}

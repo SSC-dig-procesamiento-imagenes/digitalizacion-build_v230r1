@@ -1,0 +1,140 @@
+.ulAlmacen {
+	position: relative;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	list-style: none;
+	max-height: calc(100vh - 29.2rem) !important;
+}
+
+.ulAlmacen li {
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: row;
+	
+	padding: 0.5rem;
+	box-shadow: 1px 1px 5px rgba(0,0,0,.2);
+	transition: all .1s ease-out;
+}
+.ulAlmacen li:hover {
+	box-shadow: 1px 1px 5px rgba(0,0,0,.4);
+}
+
+.contImgAlmacen {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+.contImgAlmacen img {
+	width: 5.4rem;
+	margin-bottom: 0.5rem;
+}
+.contImgAlmacen label {
+	padding-left: 0.2rem;
+	padding-right: 0.2rem;
+	border-radius: 0.2rem;
+}
+
+.contInfoAlmacen {
+	padding: 0.5rem;
+}
+
+.quantityStock {
+	position: absolute;
+	top: 0.5rem;
+	right: 0.5rem;
+	width: 2rem;
+    border-radius: 50%;
+    padding: .1rem;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+.quantityStock label {
+	margin-bottom: 0;
+	font-size: 1.3rem;
+}
+
+.btnRequest {
+	position: absolute;
+	bottom: 0.5rem;
+	right: 0.5rem;
+}
+.btnRequest .btn {
+	border-radius: 50%;
+}
+
+.quantityExcedente {
+	background-color: #e8fdff;
+	color: #0091EA;
+}
+.quantitySuccess {
+	background-color: #e1fffc;
+	color: #00BFA5;
+}
+.quantityWarning {
+	background-color: #fff4ec;
+	color: #FF6D00;
+}
+.quantityEmpty {
+	background-color: #ffeaea;
+	color: #d50000;
+}
+
+.stAlmacen {
+	font-size: 1rem;
+	width: 6.5rem;
+}
+.imgListAlmacen {
+	width: 10rem;
+}
+
+.spanStatus {
+	font-size: 1rem;
+	transition: all .2s ease-out;
+	font-weight: 800;
+}
+
+.allStatus {
+	background-color: #ebebed;
+	color: #55565a;
+}
+
+.spanStatus.allStatus {
+	background-color: #55565a;
+	color: #ebebed;
+}
+.spanStatus.quantityExcedente {
+	background-color: #0091EA;
+	color: #ecfdff;
+}
+.spanStatus.quantitySuccess {
+	background-color: #00BFA5;
+	color: #f0fffd;
+}
+.spanStatus.quantityWarning{
+	background-color: #FF6D00;
+	color: #fff4ec;
+}
+.spanStatus.quantityEmpty{
+	background-color: #d50000;
+	color: #ffeaea;
+}
+
+
+.contentDetalleModalGrupos {
+	max-height: 30rem;
+}
+.bgDetalleModal {
+	font-size: 1.2rem;
+	background-color: #55565a;
+}
+
+
+.contentSwitchTM {
+	
+}
+
+.contentLabelTM {
+	
+}
+

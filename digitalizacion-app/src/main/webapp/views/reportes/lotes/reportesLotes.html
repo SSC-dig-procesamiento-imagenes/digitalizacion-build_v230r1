@@ -1,0 +1,214 @@
+<html>
+	<head>
+		<meta charset="utf-8">
+	</head>
+	<body>
+		<div ng-controller="reportesLotesController">
+			<form role="form" name="form" novalidate>
+				<div class="row centerBox" ng-show="showDetalles == false">
+					<div class="col-xs-12 col-md-8">
+						<div class="box box-danger">
+							<div class="box-header with-border text-center">
+								<h3 class="box-title">Parámetros de búsqueda</h3>
+								
+								<div class="box-tools pull-right">
+									<button id="x" type="button" class="btn btn-box-tool"
+											data-widget="collapse">
+										<i class="fa fa-minus"></i>
+									</button>
+								</div>
+							</div>
+							<div class="box-body">
+								<!-- PARAMETROS DE BÚSQUEDA -->
+								<div class="row">
+									<div class="col-md-3"></div>
+									<div class="col-md-6">
+										<div class="form-group" >
+											<label for="checkTipoBusqueda"
+												   class="labelCheck noneSelectedUser">Tipo de Búsqueda:</label>
+											<switcher class="swTeclo pull-right"
+													  id-check="checkTipoBusqueda" id = "checkTipoBusqueda"
+													  name = "checkTipoBusqueda"
+													  true-label="Avanzada"
+													  true-value="true"
+													  false-label="Todos"
+													  false-value="false"
+													  ng-click="clickShowParametros()"
+													  ng-model="showParametros">
+											</switcher>
+										</div>
+									</div>
+									<div class="col-md-3"></div>
+								
+								</div>
+								<div class="row" ng-show ="showParametros">
+									<div class="col-md-4">
+										<div class="form-group" ng-class="{'has-error': fechaError}">
+											<label for="fInicio">
+												Fecha inicial:
+											</label>
+											<div class="input-group">
+												<div class="input-group-addon">
+													<i class="fa fa-calendar-check-o"></i>
+												</div>
+												<input class="form-control pull-right inputFecha" id="fInicio"
+													   date-picker
+													   name="fInicio" elemento="'fFin'"
+													   fecha mindate="fechaInicial"
+													   ng-model="fechaInicial"
+												/>
+											</div>
+											<span ng-show="fechaError">
+                                            <span style="color: red;">Fecha inválida</span>
+                                        </span>
+										</div>
+									</div>
+									<div class="col-md-4">
+										<div class="form-group" ng-class="{'has-error': fechaError}">
+											<label for="fFin">
+												Fecha final:
+											</label>
+											<div class="input-group">
+												<div class="input-group-addon">
+													<i class="fa fa-calendar-check-o"></i>
+												</div>
+												<input class="form-control pull-right inputFecha" id="fFin"
+													   date-picker name="fFin"
+													   fecha maxdate="fechaFinal"
+													   elemento="'fInicio'"
+													   ng-model="fechaFinal"
+												/>
+											</div>
+											<span ng-show="fechaError">
+                                            	<span style="color: red;">Fecha inválida</span>
+                                        	</span>
+										</div>
+									</div>
+									<div class="col-md-4">
+										<div class="form-group">
+											<label for="radar">Estatus del lote:</label>
+											<div class="input-group">
+												<div class="input-group-addon">
+													<i class="fa fa-flask"></i>
+												</div>
+												<select class="form-control select2" name="comboestatusProceso" id="comboestatusProceso" ng-required="false"
+														ng-options="x.nombreEstatus for x in estadosLote" ng-model="estatusProcesoSeleccionado">
+													<option value="">Todos</option>
+												</select>
+											</div>
+										</div>
+									</div>
+								
+								</div>
+								<div class="row">
+									<div class="col-md-12" align="center">
+										<button type="button" class="btn btn-danger" ng-click="clickBontonBuscar()" tooltip="Buscar lotes">
+											Buscar
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<!--												Tabla de lotes-->
+				<div class="row" ng-if="results.length > 0" ng-show="showDetalles == false">
+					<div class="col-md-12">
+						<div class="box box-danger table-responsive">
+							<div class="box-header row">
+								<div class="col-md-4">
+									<h3 class="box-title">Registros encontrados: {{(results |  filter : view.searchSomething).length | number}}</h3>
+								</div>
+								<div class="col-md-4"></div>
+								<div class="col-md-4">
+								<span class="pull-right" style="margin-left: 10px;" title="Descargar reporte de los lotes seleccionados" ng-show="(results.length > 0 ? true : false) ">
+									<a class="img-rounded" style="cursor:pointer;" ng-click="showExportarExcelBoton && confirmarDescargaExcelMovimientos()" >
+										<span class="pull-right" >
+											<img style="width: 30px;"  ng-src ="{{excelIcono}}" />
+										</span>
+									</a>
+								</span>
+									<span>
+                                    <div class="input-group">
+									<input id="searchSomething" type="text" class="form-control"
+										   placeholder="Buscar por filtro"
+										   ng-model="view.searchSomething">
+                                    <span class="input-group-addon"><i class="fa fa-search"></i></span>
+								</div>
+                                </span>
+								
+								</div>
+							
+							</div>
+							<div class="box-body">
+								<table id="tablaResultado" class="table table-hover header-fixed" >
+									<thead>
+									<tr>
+										<th sort order="'numeroLote'" by="order" reverse="reverse" class="text-center">NÚMERO DE LOTE</th>
+										<th sort order="'nombreLote'" by="order" reverse="reverse" class="text-center">NOMBRE DE LOTE</th>
+										<th sort order="'fechaLote'" by="order" reverse="reverse" class="text-center">FECHA DE EMISIÓN</th>
+										<th sort order="'totalImagenes'" by="order" reverse="reverse" class="text-center">TOTAL DE IMÁGENES</th>
+										<th sort order="'cantImagenesAceptadas'" by="order" reverse="reverse" class="text-center">IMÁGENES ACEPTADAS</th>
+										<th sort order="'cantImagenesRechazadas'" by="order" reverse="reverse" class="text-center">IMÁGENES RECHAZADAS</th>
+										<th sort order="'estatusProceso.nombreEstatus'" by="order" reverse="reverse" class="text-center">ESTATUS DE LOTE</th>
+										<th>SELECCIÓN</th>
+									</tr>
+									</thead>
+									<tbody>
+									<tr dir-paginate="result in results | orderBy:order:reverse | filter:view.searchSomething | itemsPerPage: view.rowsPerPage"
+										ng-click="clickTablaLotes(result)" pagination-id="tabla1" >
+										
+										<td align="center">{{result.numeroLote}}</td>
+										<td align="center">{{result.nombreLote}}</td>
+										<td align="center">{{result.fechaLote}}</td>
+										<td align="center">{{result.totalImagenes}}</td>
+										<td align="center">{{result.cantImagenesAceptadas}}</td>
+										<td align="center">{{result.cantImagenesRechazadas}}</td>
+										<td class="center">
+											<label class="badge spanStatus quantityEmpty" ng-if="isLoteCancelable(result)
+																									&& isLoteLiberable(result)">{{result.estatusProceso.nombreEstatus}}</label>
+											<label class="badge spanStatus quantityExcedente" ng-if="!isLoteCancelable(result)
+																									&& isLoteLiberable(result)">{{result.estatusProceso.nombreEstatus}}</label>
+											<label class="badge spanStatus quantitySuccess" ng-if="isLoteCancelable(result)
+																									&& !isLoteLiberable(result)">{{result.estatusProceso.nombreEstatus}}</label>
+											<label class="badge spanStatus quantityWarning" ng-if="!isLoteCancelable(result)
+																									&& !isLoteLiberable(result)">{{result.estatusProceso.nombreEstatus}}</label>
+										
+										
+										</td>
+										<td class="center">
+											<switcher class="swTeclo pull-center"
+													  id-check="checkTest2"
+													  ng-model="result.isSelected"
+													  ng-disabled="isDisabled"
+													  ng-change="onChange(newValue, oldValue)"
+													  true-value="true" title="Seleccione lote para reporte"
+													  false-value="false">
+											</switcher>
+										
+										</td>
+									</tr>
+									<tr ng-if="(results | filter:view.searchSomething).length < 1"><td colspan="8" class="text-center"><h4>No se encontraron coincidencias</h4></td></tr>
+									</tbody>
+								</table>
+							</div>
+							<div class="container-fluid">
+								<div class="fixed-table-pagination" style="display:block;">
+									<rows-per-page rows="view.rowsPerPage" filtro="view.searchSomething" array="results"></rows-per-page>
+									
+									<div class="pull-right pagination">
+										<dir-pagination-controls pagination-id="tabla1" class="pagination"></dir-pagination-controls>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			
+			
+			</form>
+
+		</div>
+	</body>
+</html>

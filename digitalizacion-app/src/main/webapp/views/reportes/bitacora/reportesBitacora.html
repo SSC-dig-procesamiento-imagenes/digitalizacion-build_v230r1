@@ -1,0 +1,199 @@
+<html>
+	<head>
+		<meta charset="utf-8">
+	</head>
+	<body>
+		<div ng-controller="reportesBitacoraController">
+			<form role="form" name="form" novalidate>
+				<div class="box box-danger">
+					<div class="row centerBox">
+						<div class="col-md-7">
+							<fieldset>
+								<legend class="legendStyle">
+									<a data-toggle="collapse" data-target="#divBusqueda" href="" style="color: black">Parámetros de Búsqueda</a>
+								</legend>
+								<div id="divBusqueda" class="collapse in">
+									<div class="row">
+										<div class="col-md-9">
+											<div class="row">
+												<div class="col-md-12">
+													<div class="form-group"
+														 ng-class="{'has-error': form.componenteBitacora.$invalid && !form.componenteBitacora.$pristine}">
+														<label for="radar">*Componente:</label>
+														<div class="input-group">
+															<div class="input-group-addon">
+																<i class="fa fa-user"></i>
+															</div>
+															<select class="form-control select2" data-live-search="true"
+																	name="componenteBitacora" id="componenteBitacora"
+																	ng-required="true"
+																	ng-options="conponente.componenteNombre for conponente in listaConponentes"
+																	ng-model="parametroBusquedaVO.componenteVO"
+																	ng-change="changeObtenerListaConceptosBitacora(parametroBusquedaVO.componenteVO.componenteId)">
+															</select>
+														</div>
+														<div
+																ng-show="form.componenteBitacora.$invalid && !form.componenteBitacora.$pristine">
+															<span ng-style="{color:'#dd4b39'}">El componente es
+																requerido</span>
+														</div>
+													</div>
+												</div>
+											</div>
+											
+											<div class="row">
+												<div class="col-md-12">
+													<div class="form-group"
+														 ng-class="{'has-error': form.concepto.$invalid && !form.concepto.$pristine}">
+														<label>*Concepto:</label>
+														<div class="input-group">
+															<div class="input-group-addon">
+																<i class="fa fa-user"></i>
+															</div>
+															<select name="concepto" id="conceptoSeleccion"  multiple data-actions-box="true" data-size="7" ng-disabled="disabledComboConceptos"
+																	ng-model="parametroBusquedaVO.conceptoVO"
+																	class="form-control selectpicker" data-width="100%" data-live-search="true" data-live-search-placeholder="Buscar..."
+																	ng-required="requiredConcepto" >
+																<option on-finish-render="ngRepeatFinished"
+																		ng-repeat="option in listaConceptos "
+																		value="{{option.conceptoId}}">{{option.conceptoNombre}}</option>
+															</select>
+														</div>
+														<div
+																ng-show="form.concepto.$invalid && !form.concepto.$pristine">
+																	<span ng-style="{color:'#dd4b39'}">El concepto es
+																	requerido</span>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-md-6">
+													<div class="form-group"
+														 ng-class="{'has-error': form.fInicio.$invalid && !form.fInicio.$pristine}">
+														<label for="fInicio">*Fecha Inicio:</label>
+														<div class="input-group">
+															<div class="input-group-addon">
+																<i class="fa fa-calendar-check-o"></i>
+															</div>
+															<input id="fInicio" date-picker
+																   class="form-control pull-right inputFecha" name="fInicio"
+																   ng-model="parametroBusquedaVO.fechaInicio" ng-required="true"
+																   fecha mindate="parametroBusquedaVO.fechaInicio" elemento="'fFin'">
+														</div>
+														<span ng-show="form.fInicio.$invalid && !form.fInicio.$pristine">
+																<span style="color: red;">Fecha requerida</span>
+														</span>
+													</div>
+												</div>
+												<div class="col-md-6">
+													<div class="form-group"
+														 ng-class="{'has-error': form.fFin.$invalid && !form.fFin.$pristine}">
+														<label for="fFin">*Fecha Fin:</label>
+														<div class="input-group">
+															<div class="input-group-addon">
+																<i class="fa fa-calendar-check-o"></i>
+															</div>
+															<input id="fFin" date-picker
+																   class="form-control pull-right inputFecha" name="fFin"
+																   ng-model="parametroBusquedaVO.fechaFin" ng-required="true"
+																   fecha maxdate="parametroBusquedaVO.fechaFin" elemento="'fInicio'">
+														</div>
+														<span ng-show="form.fFin.$invalid && !form.fFin.$pristine">
+															<span style="color: red;">Fecha requerida</span>
+														</span>
+													</div>
+												</div>
+												<div class="col-md-4"></div>
+											</div>
+										</div>
+										<div class="col-md-1"></div>
+										<div class="col-md-2 verticalCenter" style="min-height: 18rem !important">
+											<button type="button" class="btn btn-danger btn-block"
+													ng-click="consultarBitacoraCambios(parametroBusquedaVO)">Buscar
+											</button>
+										</div>
+									</div>
+								</div>
+							</fieldset>
+						</div>
+					</div>
+					
+					<div class="row centerCol" ng-show="listaBitacoraCambios.length > 0">
+						<div class="col-xs-12 col-md-11">
+							<article class="table-responsive fieldset">
+								<div class="box-header">
+									<div class="row">
+										<div class="col-md-8 text-left">
+											<h3 class="box-title">Registros Encontrados: {{(listaBitacoraCambios | filter:view.searchSomething).length | number}} </h3>
+										</div>
+										<div class="col-md-4">
+											<span class="pull-right" style="margin-left: 10px;" title="Descargar">
+												<a class="img-rounded" style="cursor:pointer;" ng-click="confirmarDescargaExcelMovimientos()">
+													<span class="pull-right" >
+														<img style="width: 30px;" src="static/dist/img/excel.png" ng-disabled="true">
+													</span>
+												</a>
+											</span>
+											<div class="input-group">
+												<input id="searchsomething" type="text" class="form-control" placeholder="Buscar por filtro" ng-model="view.searchSomething">
+												<span class="input-group-addon"><i class="fa fa-search"></i></span>
+											</div>
+										</div>
+									</div>
+								</div>
+								<hr/>
+								<div class="box-body">
+									<table id="tablaResultado" class="table header-fixed">
+										<thead>
+										<tr>
+											<th sort order="'nombreComponente'" by="order" reverse="reverse" class="text-center">
+												COMPONENTE</th>
+											<th sort order="'nombreConcepto'" by="order" reverse="reverse" class="text-center">
+												CONCEPTO</th>
+											<th sort order="'valorOriginal'" by="order" reverse="reverse" class="text-center">
+												VALOR <br/>ORIGINAL</th>
+											<th sort order="'valorFinal'" by="order" reverse="reverse" class="text-left">
+												VALOR FINAL</th>
+											<th sort order="'idRegistro'" by="order" reverse="reverse" class="text-left">
+												REGISTRO</th>
+											<th sort order="'registroAlterado'" by="order" reverse="reverse" class="text-center">
+												REGISTRO MODIFICADO</th>
+											<th sort order="'modificadoPor'" by="order" reverse="reverse" class="text-center">
+												MODIFICADO <br/>POR</th>
+											<th width="130" sort order="'fechaModificacion'" by="order" reverse="reverse" class="text-left">
+												FECHA DE <br/>MODIFICACIÓN</th>
+										</tr>
+										</thead>
+										<tbody>
+										<tr dir-paginate="bitacoraCambios in listaBitacoraCambios | orderBy:order:reverse | filter:view.searchSomething | itemsPerPage: view.rowsPerPage">
+											<td align="center">{{bitacoraCambios.nombreComponente}}</td>
+											<td align="center">{{bitacoraCambios.nombreConcepto}}</td>
+											<td align="center">{{bitacoraCambios.valorOriginal}}</td>
+											<td align="center">{{bitacoraCambios.valorFinal}}</td>
+											<td align="center">{{bitacoraCambios.idRegistro}}</td>
+											<td align="center">{{bitacoraCambios.registroAlterado}}</td>
+											<td align="center">{{bitacoraCambios.modificadoPor}}</td>											
+											<td align="center">{{bitacoraCambios.fechaModificacion}}</td>
+										</tr>
+										<tr ng-if="(listaBitacoraCambios | filter:view.searchSomething).length < 1"><td colspan="8" class="text-center"><h4>No se encontraron coincidencias</h4></td></tr>
+										</tbody>
+									</table>
+								</div>
+								<div class="container-fluid">
+									<div class="fixed-table-pagination" style="display:block;">
+										<rows-per-page rows="view.rowsPerPage" filtro="view.searchSomething" array="listaBitacoraCambios"></rows-per-page>
+										
+										<div class="pull-right pagination">
+											<dir-pagination-controls class="pagination"></dir-pagination-controls>
+										</div>
+									</div>
+								</div>
+							</article>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</body>
+</html>

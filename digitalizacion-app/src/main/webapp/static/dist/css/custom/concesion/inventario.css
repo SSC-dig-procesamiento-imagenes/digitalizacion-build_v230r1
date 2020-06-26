@@ -1,0 +1,55 @@
+.mapInv {
+	height: 400px;
+	background-color: #B3E5FC;
+}
+
+.ulEquipos {
+	list-style: none;
+	padding: 0;
+}
+
+.img-xs {
+	width: 1.4rem;
+}
+
+.bg-pendienteConcesion,
+.bg-equiposEstables,
+.bg-equiposMantto,
+.badgeLocalidad {
+	font-size: 1rem;
+}
+
+li span.bg-pendienteConcesion,
+li span.bg-equiposEstables,
+li span.bg-equiposMantto {
+	font-size: .75rem;
+}
+
+.badgeLocalidad {
+	background-color: #eaeaec;
+	color: #55565a;
+}
+
+.bg-pendienteConcesion {
+	background-color: #fffcf4;
+	color: #FFAB00;
+}
+.bg-equiposEstables {
+	background-color: #f2fff4;
+	color: #009d43;
+}
+.bg-equiposMantto {
+	background-color: #fff9f9;
+	color: #eb3d3d;
+}
+
+.itemMapWarehouse {
+	position: absolute;
+	width: 0.5rem;
+	height: 0.5rem;
+	background-color: steelblue;
+	z-index: 10001;
+	border-radius: 50%;
+	top: 15rem;
+	right: 40rem;
+}

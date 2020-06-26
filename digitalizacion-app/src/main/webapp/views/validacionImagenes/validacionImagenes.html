@@ -1,0 +1,665 @@
+<html>
+
+<head>
+	<meta charset="utf-8">
+</head>
+<body>
+	
+<!-- 	<div id="PaletaPendientes" > -->
+<!-- 		<div class="boletas-pendientes fondo-boletas" > -->
+<!-- 			<div ng-click="mostrarBoletasPospuestasDlg = true"> -->
+<!-- 				<a class="boletas-tamanio-texto" style="color: #fff;">Boletas pospuestas </a> -->
+<!-- 			</div> -->
+<!-- 		</div> -->
+<!-- 	</div> -->
+<div id="contenido">        		
+	<section class="content-header">
+		<h1 >Validación de Imágenes</h1>
+		<ol class="breadcrumb">
+			<li><a><i class="fa fa-book"></i>Imágenes</a></li>
+			<li class="active">Validación de Imágenes</li>
+		</ol>
+        <!--Lista de boletas pospuestas:-->
+<!--         <div ng-show="tieneBoletasPospuestas"> -->
+        		
+        		
+<!--            <div class="box-body boxbody-height">-->
+<!--                 <div class="row img-viewer"> -->
+<!--                     <div class="img-viewer__btn"> -->
+<!--                         <div tooltip="Boletas pospuestas" tooltip-placement="right"> -->
+<!--                             <button ng-click="mostrarBoletasPospuestasDlg = true" class="btn btn-box-tool"> -->
+<!--                                 <i class="fa fa-question"></i> -->
+<!--                             </button> -->
+<!--                         </div> -->
+<!--                     </div> -->
+<!--                 </div> -->
+<!--            </div>-->
+
+<!--         </div> -->
+
+	</section>
+	<!-- Main content -->
+	<section class="content">
+			<article class="aside" ng-show="tieneBoletasPospuestas" ng-click="mostrarBoletasPospuestasDlg = true">
+				<ul>
+					<li>
+						<span >Boletas pospuestas</span>
+					</li>
+				</ul>
+			</article>
+
+			<form  name="myform" novalidate >
+				<!-- Mensaje de inactivo -->
+				<div ng-show="mostrarAlgo">
+					<div ng-show="!imagenesAsignadas">
+						<div class="row">
+							<div class="col-md-4"></div>
+							<div class="col-md-4">
+								<p class="alert alert-teclo ngIfAnimate">No hay proceso de validación de imágenes activo.</p>
+							</div>
+							<div class="col-md-4"></div>
+						</div>
+					</div>
+					<div ng-show="imagenesAsignadas" >
+						<div class="row">
+							<!-- 		Lista de imágenes -->
+							<div class="col-md-2"></div>
+							<div class="col-md-8">
+								<div class="box box-danger" ng-class="{'collapsed-box':!isOpen}">
+									<div class="box-header with-border text-center" >
+										<h3 class="box-title">Lista de boletas próximas a validar</h3>
+										<div class="box-tools pull-right">
+											<button id="x1" type="button" class="btn btn-box-tool"
+													data-widget="collapse" ng-click="isOpen = !isOpen">
+												<i class="fa fa-plus"></i>
+											</button>
+										</div>
+									</div>
+									<div class="box-body">
+										<div class="col-md-4">
+											<h4 class="box-title">Registros encontrados: {{(listaImagenesVO |  filter : view.searchSomething).length | number}}</h4>
+										</div>
+										<div class="col-md-4"></div>
+										<div class="col-md-4">
+											<div class="input-group">
+												<input id="searchSomething" type="text" class="form-control"
+													   placeholder="Buscar por filtro"
+													   ng-model="view.searchSomething"> <span
+													class="input-group-addon"><i class="fa fa-search"></i></span>
+											</div>
+										</div>
+									</div>
+
+									
+									<div class="box-body">
+										<div class="row" >
+											<table id="tabla_imagenes" class="table table-hover header-fixed table-responsive" >
+												<thead>
+												<tr>
+													<th class="text-center">NÚMERO BOLETA</th>
+													<th class="text-center">NOMBRE BOLETA</th>
+													<th class="text-center">NÚMERO FOLIO</th>
+													<th class="text-center">FECHA BOLETA</th>
+													<th class="text-center">PLACA DEL OFICIAL</th>
+												</tr>
+												</thead>
+												<tbody>
+												<tr dir-paginate="val in listaImagenesVO | orderBy:order:reverse | filter:view.searchSomething | itemsPerPage: view.rowsPerPage"
+													ng-click = "clickEnTablaImagenes(val)" class="clickable-row" style="cursor: pointer;">
+
+													<td class="text-center">{{val.idImagen}}</td>
+													<td class="text-center">{{val.nombreImagen}}</td>
+													<td class="text-center">{{val.nuNumeroFolio}}</td>
+													<td class="text-center">{{val.fhInfraccion}}</td>
+													<td class="text-center">{{val.codigoPlacaOficial}}</td>
+												</tr>
+												<tr ng-if="(listaImagenesVO | filter:view.searchSomething).length < 1"><td colspan="8" class="text-center"><h4>No se encontraron coincidencias</h4></td></tr>
+												</tbody>
+											</table>
+										</div>
+										<div class="container-fluid">
+											<div class="fixed-table-pagination" style="display:block;">
+												<rows-per-page rows="view.rowsPerPage" filtro="view.searchSomething" array="listaImagenesVO"></rows-per-page>
+												<div class="pull-right pagination">
+													<dir-pagination-controls class="pagination"></dir-pagination-controls>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-2"></div>
+						</div>
+						<div class="row">
+							<!-- 		Datos de boleta -->
+							<div class="col-md-6">
+								<div class="box box-danger">
+									<div class="box-header with-border text-center">
+										<h3 class="box-title">Datos de la boleta {{imagenRealSeleccionada.nombreImagen}}</h3>
+										<div class="box-tools pull-right">
+											<button id="x2" type="button" class="btn btn-box-tool" data-widget="collapse">
+												<i class="fa fa-minus"></i>
+											</button>
+										</div>
+									</div>
+									<div class="box-body boxbody-height">
+                                        <div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="row">
+                                                        <div class="col-md-1"></div>
+                                                        <div class="col-md-10">
+                                                            <div class="form-group" ng-class="{'has-error': (!myform.$pristine && myform.numBoleta.$invalid) }">
+                                                                <label for="numBoleta">Número de folio:</label>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-addon">
+                                                                        <i class="fa fa-bars"></i>
+                                                                    </div>
+                                                                    <input type="text" id="numBoleta"
+                                                                           ng-model="imagenRealSeleccionada.nuNumeroFolio"
+                                                                           name="numBoleta" ng-hide="hideInput"
+                                                                           class="form-control" ng-required="true"
+                                                                           ng-disabled="disableInput" tabindex="1" autofocus/>
+                                                                </div>
+                                                                <div ng-show="!myform.$pristine && myform.numBoleta.$error.required">
+																    <span style="color: red;">Campo requerido</span>
+															    </div>
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-1"></div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-1"></div>
+                                                        <div class="col-md-10">
+                                                            <div class="form-group" ng-class="{'has-error': (!myform.$pristine && myform.placaVehiculo.$invalid)}">
+                                                                <label for="placaVehiculo">Placa vehicular:</label>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-addon">
+                                                                        <i class="fa fa-bars"></i>
+                                                                    </div>
+                                                                    <input type="text" id="placaVehiculo"
+                                                                           ng-model="imagenRealSeleccionada.codigoPlaca"
+                                                                           name="placaVehiculo" ng-hide="hideInput"
+                                                                           class="form-control" ng-required="true"
+                                                                           ng-disabled="disableInput" tabindex="3"/>
+                                                                </div>
+                                                                <span ng-show="!myform.$pristine && myform.placaVehiculo.$error.required">
+																<span style="color: red;">Campo requerido</span>
+															</span>
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-1"></div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-1"></div>
+                                                        <div class="col-md-10">
+                                                            <div class="form-group" >
+                                                                <label for="tipoLicencia">Tipo de licencia:</label>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-addon">
+                                                                        <i class="fa fa-bars"></i>
+                                                                    </div>
+
+                                                                    <select class="form-control"  select2 id="tipoLicencia"
+                                                                            ng-model="codigoTipoLicenciaSeleccionado"
+                                                                            ng-options="x as x for x in tiposLicencia track by x" tabindex="5">
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-1"></div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-1"></div>
+                                                        <div class="col-md-10">
+                                                            <div class="form-group" >
+                                                                <label for="placaExp">Placa expedida en:</label>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-addon">
+                                                                        <i class="fa fa-bars"></i>
+                                                                    </div>
+
+                                                                    <select class="form-control"  select2 id="placaExp"
+                                                                            ng-model="nbPlacaExpEn"
+                                                                            ng-options="x as x.lugar for x in lugaresEn track by x.lugar" tabindex="7">
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-1"></div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-1"></div>
+                                                        <div class="col-md-10">
+                                                            <div class="form-group" ng-class="{'has-error': validaFraccion}">
+                                                                <label for="fraccion">Fracción:</label>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-addon">
+                                                                        <i class="fa fa-bars"></i>
+                                                                    </div>
+                                                                    <input type="number" id="fraccion"
+                                                                           ng-model="imagenRealSeleccionada.nuFraccion"
+                                                                           ng-hide="hideInput" 
+                                                                           min="0" max="99"
+                                                                           class="form-control pull-right" 
+                                                                           ng-disabled="disableInput" tabindex="9"
+                                                                           ng-change="validaCambios()" number-only/>
+                                                                </div>
+                                                                <!--<div ng-show="myform.fraccion.$error.required && myform.fraccion.$dirty">
+                                                                    <span ng-style="{color:'red'}">
+                                                                        Campo obligatorio.
+                                                                    </span>
+                                                                </div>-->
+                                                                <span ng-show="validaFraccion">
+                                                                <span style="color: red;">Campo incorrecto</span>
+															</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-1"></div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-1"></div>
+                                                        <div class="col-md-10">
+                                                            <div class="form-group" ng-class="{'has-error': validaFraccion}">
+                                                                <label for="parrafo">Párrafo:</label>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-addon">
+                                                                        <i class="fa fa-bars"></i>
+                                                                    </div>
+                                                                    <input type="number" id="parrafo"
+                                                                           ng-model="imagenRealSeleccionada.nuParrafo"
+                                                                           name="valor" ng-hide="hideInput"
+                                                                           min="0" max="99" value = null
+                                                                           class="form-control" ng-required="requiredInput"
+                                                                           ng-disabled="disableInput" tabindex="11"
+                                                                           ng-change="validaCambios()" number-only/>
+                                                                </div>
+                                                                <span ng-show="validaFraccion">
+                                                                	<span style="color: red;">Campo incorrecto</span>
+																</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-1"></div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-1"></div>
+                                                        <div class="col-md-10">
+                                                            <div class="form-group" ng-class="{'has-error': (!myform.$pristine && myform.fechaBoleta.$invalid) || validaFraccion }">
+                                                                <label for="fechaBoleta">Fecha de boleta:</label>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-addon">
+                                                                        <i class="fa fa-calendar"></i>
+                                                                    </div>
+                                                                    <input class="form-control pull-right inputFecha" id="fechaBoleta"
+                                                                           name="fechaBoleta" date-picker
+                                                                           required fecha
+                                                                           mindate="'29/01/2000'"
+                                                                           maxdate="'31/12/2039'"
+                                                                           elemento="'fInicio'"
+                                                                           ng-model="imagenRealSeleccionada.fhInfraccion"
+                                                                           readonly tabindex="13"
+                                                                           ng-change="validaCambios()"/>
+                                                                </div>
+                                                                <span ng-show="!myform.$pristine && myform.fechaBoleta.$error.required">
+																<span style="color: red;">Campo requerido</span>
+															</span>
+                                                                <span ng-show="validaFraccion">
+                                                                <span style="color: red;">Campo incorrecto</span>
+															</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-1"></div>
+                                                    </div>
+
+
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="row">
+                                                        <div class="col-md-1"></div>
+                                                        <div class="col-md-10">
+                                                            <div class="form-group" >
+                                                                <label for="placaOf">Marca del vehículo:</label>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-addon">
+                                                                        <i class="fa fa-bars"></i>
+                                                                    </div>
+                                                                    <select class="form-control"  select2 tabindex="2" id="marcaVehiculo"
+                                                                            ng-model="marcaVehiculoSeleccionada"
+                                                                            ng-options="x as x.nombreMarca for x in todasMarcasVehiculos track by x.nombreMarca" >
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-1"></div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-1"></div>
+                                                        <div class="col-md-10">
+                                                            <div class="form-group" >
+                                                                <label for="numLicencia">Número de licencia:</label>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-addon">
+                                                                        <i class="fa fa-bars"></i>
+                                                                    </div>
+                                                                    <input type="text" id="numLicencia"
+                                                                           ng-model="imagenRealSeleccionada.numeroLicencia"
+                                                                           name="valor" ng-hide="hideInput"
+                                                                           class="form-control" ng-required="requiredInput"
+                                                                           ng-disabled="disableInput" tabindex="4"/>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-1"></div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-1"></div>
+                                                        <div class="col-md-10">
+                                                            <div class="form-group" >
+                                                                <label for="licExp">Licencia expedida en:</label>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-addon">
+                                                                        <i class="fa fa-bars"></i>
+                                                                    </div>
+
+                                                                    <select class="form-control"  select2 id="licExp"
+                                                                            ng-model="nbLicExpEn"
+                                                                            ng-options="x as x.lugar for x in lugaresEn track by x.lugar" tabindex="6">
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-1"></div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-1"></div>
+                                                        <div class="col-md-10">
+                                                            <div class="form-group" ng-class="{'has-error': (!myform.$pristine && myform.articulo.$invalid) || validaFraccion}">
+                                                                <label for="articulo">Artículo:</label>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-addon">
+                                                                        <i class="fa fa-bars"></i>
+                                                                    </div>
+                                                                    <input type="number"  id="articulo"
+                                                                           ng-model="imagenRealSeleccionada.nuArtInfrac"
+                                                                           name="articulo" ng-hide="hideInput"
+                                                                           class="form-control" ng-required="true"
+                                                                           ng-disabled="disableInput" tabindex="8"
+                                                                           ng-change="validaCambios() " number-only/>
+                                                                </div>
+                                                                <span ng-show="!myform.$pristine && myform.articulo.$error.required">
+																    <span style="color: red;">Campo requerido</span>
+															    </span>
+                                                                <span ng-show="validaFraccion">
+                                                                    <span style="color: red;">Campo incorrecto</span>
+															    </span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-1"></div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-1"></div>
+                                                        <div class="col-md-10">
+                                                            <div class="form-group" ng-class="{'has-error': validaFraccion}">
+                                                                <label for="inciso">Inciso:</label>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-addon">
+                                                                        <i class="fa fa-bars"></i>
+                                                                    </div>
+                                                                    <input type="text" id="inciso"
+                                                                           ng-model="imagenRealSeleccionada.nuInciso"
+                                                                           name="valor" ng-hide="hideInput"
+                                                                           class="form-control" ng-required="requiredInput"
+                                                                           ng-disabled="disableInput" tabindex="10"
+                                                                           ng-change="validaCambios()"/>
+                                                                </div>
+                                                                <span ng-show="validaFraccion">
+                                                                    <span style="color: red;">Campo incorrecto</span>
+															    </span>
+                                                            </div>
+                                                            <!--</div>-->
+                                                        </div>
+                                                        <div class="col-md-1"></div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-1"></div>
+                                                        <div class="col-md-10">
+                                                            <div class="form-group" >
+                                                                <label for="unidadTerr">Unidad territorial:</label>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-addon">
+                                                                        <i class="fa fa-bars"></i>
+                                                                    </div>
+                                                                    <input type="text" id="unidadTerr"
+                                                                           ng-model="imagenRealSeleccionada.nbUtDelegacion"
+                                                                           name="valor" ng-hide="hideInput"
+                                                                           class="form-control" ng-required="requiredInput"
+                                                                           ng-disabled="disableInput" tabindex="12"/>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-1"></div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-1"></div>
+                                                        <div class="col-md-10">
+                                                            <div class="form-group" ng-class="{'has-error': (!myform.$pristine && myform.placaOf.$invalid)}">
+                                                                <label for="placaOf">Placa del oficial:</label>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-addon">
+                                                                        <i class="fa fa-bars"></i>
+                                                                    </div>
+                                                                    <input type="text" id="placaOf"
+                                                                           ng-model="imagenRealSeleccionada.codigoPlacaOficial"
+                                                                           name="placaOf" ng-hide="hideInput"
+                                                                           class="form-control" ng-required="true"
+                                                                           ng-disabled="disableInput" tabindex="14" />
+                                                                </div>
+                                                                <span ng-show="!myform.$pristine && myform.placaOf.$error.required">
+																<span style="color: red;">Campo requerido</span>
+															</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-1"></div>
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-2"></div>
+                                                <div class="col-md-3">
+                                                    <button ng-click="clickEnBotonAceptarImagen()" type="button" class="btn btn-danger"
+                                                            tooltip="Acepta los datos de la imagen" tabindex="15" id="aceptarImagenBtn"
+                                                            name="aceptarImagenBtn">
+                                                        <i class="fa fa-check"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <button ng-click="showModalCancelar = true;" type="button" class="btn btn-danger"
+                                                            tooltip="Rechaza los datos de la imagen" tabindex="16">
+                                                        <i class="fa fa-times"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <button ng-click="showModal = true;" type="button" class="btn btn-danger"
+                                                            tooltip="Pospone la evaluación de la boleta" tabindex="17">
+                                                        <i class="fa fa-question"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="col-md-1"></div>
+                                            </div>
+                                        </div>
+									</div>
+								</div>
+
+							</div>
+							<!-- 		Visor de las imágenes -->
+							<div class="col-md-6">
+								<div class="box box-danger">
+									<div class="box-header with-border text-center">
+										<h3 class="box-title">Visor de imágenes: {{imagenRealSeleccionada.nombreImagen}} - {{parteImagen}}</h3>
+										<div class="box-tools pull-right">
+											<button id="x" type="button" class="btn btn-box-tool"
+													data-widget="collapse">
+												<i class="fa fa-minus"></i>
+											</button>
+										</div>
+									</div>
+									<div class="box-body boxbody-height">
+										<!-- Botones de operación sobre la imagen -->
+										<div class="row img-viewer">
+
+											<div class="img-viewer__btn">
+												<div tooltip="Mostrar anverso" tooltip-placement="right">
+													<button ng-click="clickEnBotonMostrarAnverso()" class="btn btn-box-tool">
+														<i class="fa fa-hand-o-left"></i>
+													</button>
+												</div>
+												
+												<div tooltip="Mostrar reverso" tooltip-placement="right">
+													<button ng-click="clickEnBotonMostrarReverso()" class="btn btn-box-tool" tooltip="Mostrar reverso" tooltip-placement="right">
+														<i class="fa fa-hand-o-right"></i>
+													</button>
+												</div>
+												
+												<div tooltip="Invertir el orden de las imágenes" tooltip-placement="right">
+													<button ng-click="clickEnBotonCambiaOrdenImagenes()" class="btn btn-box-tool" tooltip="Invertir orden" tooltip-placement="right">
+														<i class="fa fa-arrows-h"></i>
+													</button>
+												</div>
+												
+											</div>
+											
+											<div class="col-md-12">
+												<div class="img-viewer__img">
+													<img ng-src="{{imagenObtenida}}" id="imagenMostrar"
+														class="center-block"/>
+												</div>
+											</div>
+										</div>
+
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+                <modal visible="showModal" size-modal="md" noescape modalstatic>
+                    <modal-header title="Causa de la posposición:"></modal-header>
+                    <modal-body>
+                        <div class="form-group">
+                            <input type="text" id="causaPosposicion"
+                                   ng-model="boletaPosponerVO.causa" name="causaPosposicion"
+                                   ng-required="false" class="form-control"/>
+                        </div>
+                    </modal-body>
+                    <modal-footer btn-close="Cancelar">
+                        <button class="btn btn-danger" ng-click="saveModal()">
+                            Aceptar
+                        </button>
+                    </modal-footer>
+                </modal>
+
+                <modal visible="showModalCancelar" size-modal="md" noescape modalstatic>
+                    <modal-header title="Causa del rechazo:"></modal-header>
+                    <modal-body>
+                        <div class="form-group">
+                            <input type="text" id="txtCausaRechazoId"
+                                   ng-model="cancelarImagenVO.causa" name="txtCausaRechazoName"
+                                   ng-required="false" class="form-control"/>
+                        </div>
+
+
+                    </modal-body>
+                    <modal-footer btn-close="Cancelar">
+                        <button class="btn btn-danger" ng-click="saveModalCancelar()">
+                            Aceptar
+                        </button>
+                    </modal-footer>
+                </modal>
+
+                <modal visible="mostrarBoletasPospuestasDlg" size-modal="md" noescape modalstatic>
+                    <modal-header title="Boletas pospuestas:"></modal-header>
+                    <modal-body>
+                        <div class="row">
+                            <!--<div class="col-md-2"></div>-->
+                            <div class="col-md-12">
+                                <div class="box box-danger" >
+                                    <div class="box-body">
+                                        <div class="col-md-4">
+                                            <h4 class="box-title">Registros encontrados: {{(boletasPospuestasPorValidador |  filter : view.searchSomething0).length | number}}</h4>
+                                        </div>
+                                        <div class="col-md-4"></div>
+                                        <div class="col-md-4">
+                                            <div class="input-group">
+                                                <input id="searchSomething0" type="text" class="form-control"
+                                                       placeholder="Buscar por filtro"
+                                                       ng-model="view.searchSomething0"> <span
+                                                    class="input-group-addon"><i class="fa fa-search"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="box-body">
+                                        <div class="row" >
+                                            <table id="tabla_imagenes_pospuestas" class="table table-hover header-fixed table-responsive" >
+                                                <thead>
+                                                    <tr>
+                                                        <th width="20%" class="text-center">NÚMERO BOLETA</th>
+                                                        <th width="20%" class="text-center">FECHA BOLETA</th>
+                                                        <th width="60%" class="text-center">CAUSA DE POSPOSICIÓN</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr dir-paginate="val in boletasPospuestasPorValidador | orderBy:order:reverse | filter:view.searchSomething0 | itemsPerPage: view.rowsPerPage"
+                                                            ng-click = "clickEnTablaImagenesPospuestas(val)" class="clickable-row" style="cursor: pointer;" tooltip="{{val.txPospuesta}}" >
+
+                                                        <td width="20%" class="text-center">{{val.idImagen}}</td>
+                                                        <td width="20%" class="text-center">{{val.fhInfraccion}}</td>
+                                                        <td width="60%" class="text-center">{{val.txPospuesta.substring(0, 60)}}</td>
+                                                    </tr>
+                                                    <tr ng-if="(boletasPospuestasPorValidador | filter:view.searchSomething0).length < 1"><td colspan="8" class="text-center"><h4>No se encontraron coincidencias</h4></td></tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="container-fluid">
+                                            <div class="fixed-table-pagination" style="display:block;">
+                                                <rows-per-page rows="view.rowsPerPage" filtro="view.searchSomething0" array="boletasPospuestasPorValidador"></rows-per-page>
+                                                <div class="pull-right pagination">
+                                                    <dir-pagination-controls class="pagination"></dir-pagination-controls>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <!--<div class="col-md-2"></div>-->
+                        </div>
+                        <div class="row">
+                            <div class="col-md-5"></div>
+                            <div class="col-md-2">
+                                <button type="button" class="btn btn-danger"
+                                        ng-click="buscarBoletasPospuestasPorValidador()">
+                                    Cerrar
+                                </button>
+                            </div>
+                            <div class="col-md-5"></div>
+                        </div>
+
+                    </modal-body>
+                    <modal-footer>
+
+                    </modal-footer>
+                </modal>
+
+
+
+			</form>
+		
+	</section>
+</div>
+</body>
+</html>

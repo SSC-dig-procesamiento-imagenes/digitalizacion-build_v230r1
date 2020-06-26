@@ -1,0 +1,119 @@
+<html>
+<head>
+	<meta charset="utf-8">
+</head>
+<body>
+	<section class="content-header">
+		<h1 >Gestión de Asignaciones</h1>
+		<ol class="breadcrumb">
+			<li><a><i class="fa fa-book"></i>Imágenes</a></li>
+			<li class="active">Gestión de Asignaciones</li>
+		</ol>
+	</section>
+	<!-- Main content -->
+	<section class="content">
+			<form  name="myform" novalidate >
+				<div ng-show="mostrarAlgo">
+					<div ng-show="!existenAsignaciones">
+						<div class="row">
+							<div class="col-md-4"></div>
+							<div class="col-md-4">
+								<p class="alert alert-teclo ngIfAnimate">No existen asignaciones de imágenes en el momento.</p>
+							</div>
+							<div class="col-md-4"></div>
+						</div>
+					</div>
+
+					<div class="row" ng-show="existenAsignaciones">
+						<!-- 		Lista de imágenes -->
+						<div class="col-md-1"></div>
+						<div class="col-md-10">
+							<div class="box box-danger">
+								<div class="box-header with-border text-center">
+									<h3 class="box-title">Listado de asignaciones</h3>
+									<div class="box-tools pull-right">
+										<button id="x" type="button" class="btn btn-box-tool"
+												data-widget="collapse">
+											<i class="fa fa-minus"></i>
+										</button>
+									</div>
+								</div>
+								<div class="box-header row">
+									<div class="col-md-4">
+										<h3 class="box-title">Registros encontrados: {{(listaAsignaciones |  filter : view.searchSomething).length | number}}</h3>
+									</div>
+									<div class="col-md-4"></div>
+									<div class="col-md-4">
+										<div class="input-group">
+											<input id="searchSomething" type="text" class="form-control"
+												   placeholder="Buscar por filtro"
+												   ng-model="view.searchSomething">
+											<span class="input-group-addon"><i class="fa fa-search"></i></span>
+										</div>
+									</div>
+
+								</div>
+								<div class="box-body">
+									<div class="row">
+
+										<table id="tabla_asignaciones" class="table table-hover  header-fixed">
+											<thead>
+											<tr>
+												<th sort order="'nickName'" by="order" reverse="reverse" class="text-center">USUARIO</th>
+												<th sort order="'nombre'" by="order" reverse="reverse" class="text-center">NOMBRE(S) Y APELLIDO</th>
+												<th sort order="'email'" by="order" reverse="reverse" class="text-center">EMAIL</th>
+												<th sort order="'cantImagenesAsignadas'" by="order" reverse="reverse" class="text-center">ASIGNADAS</th>
+												<th sort order="'cantImagenesValidandose'" by="order" reverse="reverse" class="text-center">EN CURSO</th>
+                                                <th sort order="'fechaUltimaOperacion'" by="order" reverse="reverse" class="text-center">FECHA ULTIMA OPERACIÓN</th>
+												<th >CANCELAR</th>
+											</tr>
+											</thead>
+											<tbody>
+												<tr dir-paginate="asign in listaAsignaciones | orderBy:order:reverse | filter:view.searchSomething | itemsPerPage: view.rowsPerPage"
+													ng-click="clickTablaAsignaciones(asign.idValidador)">
+
+													<td class="text-center">{{asign.nickName}}</td>
+													<td class="text-center">{{asign.nombre}} {{asign.apellidoP}}</td>
+													<td class="text-center">{{asign.email}}</td>
+													<td class="text-center">{{asign.cantImagenesAsignadas}}</td>
+													<td class="text-center">{{asign.cantImagenesValidandose}}</td>
+                                                    <td class="text-center">{{asign.fechaUltimaOperacion}}</td>
+													<td class="text-center">
+														<button class="btn btn-danger btn-box-tool" tooltip="Cancelar asignaciones del validador seleccionado"
+																ng-click="eliminarAsignaciones(asign.idValidador)" >
+															<i class="fa fa-cut"></i>
+														</button>
+													</td>
+												</tr>
+												<tr ng-if="(listaAsignaciones | filter:view.searchSomething).length < 1"><td colspan="8" class="text-center">
+													<h4>No se encontraron coincidencias</h4></td></tr>
+											</tbody>
+										</table>
+									</div>
+									<div class="container-fluid">
+										<div class="fixed-table-pagination" style="display:block;">
+											<rows-per-page rows="view.rowsPerPage" filtro="view.searchSomething" array="listaAsignaciones"></rows-per-page>
+											<div class="pull-right pagination">
+												<dir-pagination-controls class="pagination"></dir-pagination-controls>
+											</div>
+										</div>
+									</div>
+                                    <div class="row">
+                                        <div class="col-md-12" align="center">
+                                            <button class="btn btn-danger" ng-click="recargar()" tooltip="Refrescar listado de asignaciones">
+                                                <i class="fa fa-refresh"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-1"></div>
+					</div>
+
+				</div>
+			</form>
+		
+	</section>
+</body>
+</html>

@@ -1,0 +1,22 @@
+.contenedor-cnvs{
+    background-color: white; 
+    width: 100%; 
+    height: 625px; 
+    overflow-y: scroll;
+    overflow-x: scroll;
+    border-top: solid 3px #CF0A2C;
+    border-left: solid 3px #CF0A2C;
+    padding: 0.2em;
+    margin: 0.5em;
+    padding: 0;
+}
+.controles-cnvs{
+    padding:10px;
+    position: absolute;
+}
+.controles-cnvs button{
+    display: block;
+    margin-bottom: 7px; 
+    background-color:#CF0A2C;
+    margin-left: 0;
+}

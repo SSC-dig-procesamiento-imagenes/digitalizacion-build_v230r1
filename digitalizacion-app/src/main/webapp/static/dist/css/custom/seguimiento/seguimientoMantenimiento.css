@@ -1,0 +1,145 @@
+/*FONDOS BOX*/
+.bgBlanco{
+	background-color: #fff !important;
+	color: #546E7A !important;
+	font-weight: bold !important;
+}
+.bgAzul{
+	background-color: #00BCD4 !important;
+	color: #DCF7FA !important;
+	font-weight: bold !important;
+}
+.bgTeal{
+	background-color: #009688 !important;
+	color: #DDF5F3 !important;
+	font-weight: bold !important;
+}
+.bgRojo{
+	background-color: #cf0a2c !important;
+	color: #FBE9E8 !important;
+	font-weight: bold !important;
+}
+.bgGris{
+	background-color: #607D8B !important;
+	color: #E8EFF3 !important;
+	font-weight: bold !important;
+}
+.bgVerde{
+	background-color: #4CAF50 !important;
+	color: #DAF5DB !important;
+	font-weight: bold !important;
+}
+.bgAmarillo{
+	background-color: #FDD835 !important;
+	color: #FCFAEC !important;
+	font-weight: bold !important;
+}
+
+.segEst1{
+	background-color: #C1C7CC !important;
+	color: #FCFAEC !important;
+	font-weight: bold !important;
+}
+
+.segEst2{
+	background-color: #4B6178 !important;
+	color: #FCFAEC !important;
+	font-weight: bold !important;
+}
+
+.segEst3{
+	background-color: #52BE80 !important;
+	color: #FCFAEC !important;
+	font-weight: bold !important;
+}
+
+.segEst4{
+	background-color: #F7DC6F !important;
+	color: #FCFAEC !important;
+	font-weight: bold !important;
+}
+
+.segEst5{
+	background-color: #EC7063 !important;
+	color: #FCFAEC !important;
+	font-weight: bold !important;
+}
+
+.segEst6{
+	background-color: #E74C3C !important;
+	color: #FCFAEC !important;
+	font-weight: bold !important;
+}
+
+/*COLORES*/
+.colorGris{
+	background-color: #607D8B;
+	color: #fff;
+}
+.colorAmarillo{
+	background-color: #FDD835;
+	color: #fff;
+}
+.colorAzul{
+	background-color: #00BCD4;
+	color: #fff;
+}
+.colorVerde{
+	background-color: #4CAF50;
+	color: #fff;
+}
+
+.colorVerdeDegradado{
+	background-color:#52BE80;
+}
+
+.colorGrisDegradado{
+	background-color:#C1C7CC;
+}
+
+.colorRojoBold{
+	background-color:#cf0a2c;
+}
+
+.colRojoDegradado{
+	background-color:#E74C3C;
+}
+
+.colorNaranja{
+	background-color: #FF9800;
+	color: #fff;
+}
+.colorRojo{
+	background-color: #E53935;
+	color: #fff;
+}
+
+.info-box{
+	height: 6.429rem;
+}
+.info-box-icon{
+	border-top-left-radius: 0.1429rem;
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+	border-bottom-left-radius: 0.1429rem;
+	display: block;
+	float: left;
+	height: 6.429rem;
+	width: 6.429rem;
+	text-align: center;
+	font-size: 3.214rem;
+	line-height: 6.429rem;
+	background: rgba(0,0,0,0.2);
+}
+
+.estatusScroll{
+	height: 28.57rem !important;
+}
+
+.bagdeSegCirculo{
+     width: 13px;
+     height: 13px;
+     -moz-border-radius: 50%;
+     -webkit-border-radius: 50%;
+     border-radius: 50%;
+}

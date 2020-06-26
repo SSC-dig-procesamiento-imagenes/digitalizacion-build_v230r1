@@ -1,0 +1,472 @@
+<html>
+<head>
+	<meta charset="utf-8">
+</head>
+<body>
+	<div ng-show="error" class="alert alert-warning">
+    	{{error.message}}
+	</div>
+	
+	<section class="content-header">
+		<h1>Consulta de Lotes</h1>
+		<ol class="breadcrumb">
+			<li><a><i class="fa fa-book"></i>Imágenes</a></li>
+			<li class="active">Consulta de Lotes</li>
+		</ol>
+	</section>
+
+	<!-- Main content -->
+	<section class="content">
+		<form role="form" name="form" novalidate>
+			<div class="row centerBox" ng-show="showDetalles == false">
+				<div class="col-xs-12 col-md-8">
+					<div class="box box-danger">
+						<div class="box-header with-border text-center">
+							<h3 class="box-title">Parámetros de búsqueda</h3>
+							
+							<div class="box-tools pull-right">
+								<button id="x" type="button" class="btn btn-box-tool"
+									data-widget="collapse">
+									<i class="fa fa-minus"></i>
+								</button>
+							</div>
+						</div>
+						<div class="box-body">
+							<!-- PARAMETROS DE BÚSQUEDA -->
+							<div class="row">
+								<div class="col-md-3"></div>
+								<div class="col-md-6">
+									<div class="form-group" >
+										<label for="checkTipoBusqueda"
+											class="labelCheck noneSelectedUser">Tipo de Búsqueda:</label>
+										<switcher class="swTeclo pull-right"
+											id-check="checkTipoBusqueda" id = "checkTipoBusqueda"
+                                                  name = "checkTipoBusqueda"
+											true-label="Avanzada"
+											true-value="true"
+											false-label="Todos"
+											false-value="false"
+                                            ng-click="clickShowParametros()"
+											ng-model="showParametros">
+										</switcher>
+									</div>
+								</div>
+								<div class="col-md-3"></div>
+								
+							</div>
+							<div class="row" ng-show ="showParametros">
+								<div class="col-md-4">
+									<div class="form-group" ng-class="{'has-error': fechaError}">
+										<label for="fInicio">
+											Fecha inicial:
+										</label>
+										<div class="input-group">
+											<div class="input-group-addon">
+												<i class="fa fa-calendar-check-o"></i>
+											</div>
+											<input class="form-control pull-right inputFecha" id="fInicio"
+												date-picker
+												fecha mindate="fechaInicial"
+												name="fInicio" elemento="'fFin'"
+												ng-model="fechaInicial"
+											/>
+										</div>
+                                        <span ng-show="fechaError">
+                                            <span style="color: red;">Fecha inválida</span>
+                                        </span>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="form-group" ng-class="{'has-error': fechaError}">
+										<label for="fFin">
+											Fecha final:
+										</label>
+										<div class="input-group">
+											<div class="input-group-addon">
+												<i class="fa fa-calendar"></i>
+											</div>
+											<input class="form-control pull-right inputFecha" id="fFin"
+												date-picker
+												name="fFin"
+												fecha maxdate="fechaFinal"
+												elemento="'fInicio'"
+												ng-model="fechaFinal"
+											/>
+										</div>
+                                        <span ng-show="fechaError">
+                                            <span style="color: red;">Fecha inválida</span>
+                                        </span>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="form-group">
+										<label for="radar">Estatus del lote:</label>
+										<div class="input-group">
+											<div class="input-group-addon">
+												<i class="fa fa-flask"></i>
+											</div>
+											<select class="form-control select2" name="comboestatusProceso" id="comboestatusProceso" ng-required="false"
+												ng-options="x.nombreEstatus for x in estadosLote" ng-model="estatusProcesoSeleccionado">
+											<option value="">Todos</option>
+											</select>
+										</div>
+									</div>
+								</div>
+
+							</div>
+							<div class="row">
+								<div class="col-md-12" align="center">
+									<button type="button" class="btn btn-danger" ng-click="clickBontonBuscar()" tooltip="Buscar lotes">
+										Buscar
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+<!--												Tabla de lotes-->
+			<div class="row" ng-if="results.length > 0" ng-show="showDetalles == false">
+				<div class="col-md-12">
+					<div class="box box-danger table-responsive">
+						<div class="box-header row">
+							<div class="col-md-4">
+								<h3 class="box-title">Registros encontrados: {{(results |  filter : view.searchSomething).length | number}}</h3>
+							</div>
+							<div class="col-md-4"></div>
+							<div class="col-md-4">
+								<span class="pull-right" style="margin-left: 10px;" title="Descargar Reporte" ng-show="(results.length > 0 ? true : false)">
+									<a class="img-rounded" style="cursor:pointer;" ng-click="confirmarDescargaExcelMovimientos()">
+										<span class="pull-right" >
+											<img style="width: 30px;" src="static/dist/img/excel.png" ng-disabled="true">
+										</span>
+									</a>
+								</span>
+                                <span>
+                                    <div class="input-group">
+									<input id="searchSomething" type="text" class="form-control"
+                                           placeholder="Buscar por filtro"
+                                           ng-model="view.searchSomething">
+                                    <span class="input-group-addon"><i class="fa fa-search"></i></span>
+								</div>
+                                </span>
+
+							</div>
+							
+						</div>
+						<div class="box-body">
+							<table id="tablaResultado" class="table table-hover header-fixed" >
+								<thead>
+									<tr>
+										<th sort order="'numeroLote'" by="order" reverse="reverse" class="text-center">NÚMERO DE LOTE</th>
+										<th sort order="'nombreLote'" by="order" reverse="reverse" class="text-center">NOMBRE DE LOTE</th>
+										<th sort order="'fechaLote'" by="order" reverse="reverse" class="text-center">FECHA DE EMISIÓN</th>
+										<th sort order="'totalImagenes'" by="order" reverse="reverse" class="text-center">TOTAL DE IMÁGENES</th>
+										<th sort order="'cantImagenesAceptadas'" by="order" reverse="reverse" class="text-center">IMÁGENES ACEPTADAS</th>
+										<th sort order="'cantImagenesRechazadas'" by="order" reverse="reverse" class="text-center">IMÁGENES RECHAZADAS</th>
+										<th sort order="'estatusProceso.nombreEstatus'" by="order" reverse="reverse" class="text-center">ESTATUS DE LOTE</th>
+										<th >ACCIONES</th>
+										
+									</tr>
+								</thead>
+								<tbody>
+									<tr dir-paginate="result in results | orderBy:order:reverse | filter:view.searchSomething | itemsPerPage: view.rowsPerPage"
+									ng-click="clickTablaLotes(result)" pagination-id="tabla1" > 
+										
+										<td align="center">{{result.numeroLote}}</td>
+										<td align="center">
+											<a href="#" ng-click="detallesLote(result)" tooltip="Ver detalles del lote seleccionado" style="color: #0d87e9;">
+												{{result.nombreLote}}
+											</a>
+										</td>
+										<td align="center">{{result.fechaLote}}</td>
+										<td align="center">{{result.totalImagenes}}</td>
+										<td align="center">{{result.cantImagenesAceptadas}}</td>
+										<td align="center">{{result.cantImagenesRechazadas}}</td>
+										<td class="center">
+											<label class="badge spanStatus quantityEmpty" ng-if="isLoteCancelable(result)
+																									&& isLoteLiberable(result)">{{result.estatusProceso.nombreEstatus}}</label>
+											<label class="badge spanStatus quantityExcedente" ng-if="!isLoteCancelable(result)
+																									&& isLoteLiberable(result)">{{result.estatusProceso.nombreEstatus}}</label>
+											<label class="badge spanStatus quantitySuccess" ng-if="isLoteCancelable(result)
+																									&& !isLoteLiberable(result)">{{result.estatusProceso.nombreEstatus}}</label>
+											<label class="badge spanStatus quantityWarning" ng-if="!isLoteCancelable(result)
+																									&& !isLoteLiberable(result)">{{result.estatusProceso.nombreEstatus}}</label>
+
+										</td>
+										<td class="center">
+
+												<button class="btn btn-danger btn-box-tool" tooltip="Formar para liberación"
+														ng-click="formarParaLiberarLoteSeleccionado()" ng-if="isLoteLiberable(result)">
+													<i class="fa fa-gavel"></i>
+												</button>
+
+												<button class="btn btn-danger btn-box-tool" tooltip="Cancelar lote"
+														ng-click="cancelarLoteSeleccionado()" ng-if="isLoteCancelable(result)">
+													<i class="fa fa-cut"></i>
+												</button>
+
+												<button class="btn btn-danger btn-box-tool" tooltip="Cambiar el estatus a Validando Información"
+														ng-click="ponerLoteEnValidandoInformacion()" ng-if="isLoteProcesado(result)">
+													<i class="fa fa-hand-o-up"></i>
+												</button>
+											
+											<button class="btn btn-danger btn-box-tool" tooltip="Exportar a excel el lote seleccionado"
+													ng-click="confirmarExportarExcelLoteSeleccionado()">
+												<i class="fa fa-file-excel-o"></i>
+											</button>
+
+										</td>
+									</tr>
+									<tr ng-if="(results | filter:view.searchSomething).length < 1"><td colspan="8" class="text-center"><h4>No se encontraron coincidencias</h4></td></tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="container-fluid">
+							<div class="fixed-table-pagination" style="display:block;">
+								<rows-per-page rows="view.rowsPerPage" filtro="view.searchSomething" array="results"></rows-per-page>
+								
+								<div class="pull-right pagination">
+									<dir-pagination-controls pagination-id="tabla1" class="pagination"></dir-pagination-controls>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+<!--												Detalles del lote seleccionado-->
+			<div class="row" ng-if="listaImagenes && listaImagenes.length > 0" ng-show="showDetalles == true">
+				<div class="col-md-12">
+					<div class="box box-danger table-responsive">
+						<div class="box-header row">
+							<div class="col-md-4">
+								<h3 class="box-title">Registros encontrados: {{(listaImagenes |  filter : view.searchImages).length | number}}</h3>
+							</div>
+							<div class="col-md-4">
+								<h3 class="box-title">Lote "{{loteSeleccionado.nombreLote}}"</h3>
+							</div>
+							<div class="col-md-4">
+								<div class="input-group">
+									<input id="searchImages" type="text" class="form-control"
+										   placeholder="Buscar por filtro"
+										   ng-model="view.searchImages"> <span
+										class="input-group-addon"><i class="fa fa-search"></i></span>
+								</div>
+							</div>
+						</div>
+						<div class="box-body">
+							<table id="detallesImagenesTable" class="table table-hover header-fixed table-responsive" >
+								<thead>
+									<tr>
+										<th>NÚMERO FOLIO</th>
+										<th>NOMBRE BOLETA</th>
+										<th>PLACA VEHICULAR</th>
+										<th>NÚMERO LICENCIA</th>
+										<th>TIPO LICENCIA</th>
+										<th>PLACA DEL OFICIAL</th>
+										<th>UNIDAD TERRITORIAL</th>
+										<th>NÚMERO FOLIO</th>
+										<th>FECHA BOLETA</th>
+										<th>DETALLES</th>
+
+									</tr>
+								</thead>
+								<tbody>
+								<tr dir-paginate="result in listaImagenes | orderBy:order:reverse | filter:view.searchImages | itemsPerPage: view.rowsPerPage2"
+									ng-click="clickTablaImagenes(result)" pagination-id="tabla2" ><!--Almacena la imagen seleccionada en "imagenSeleccionada"-->
+
+									<td align="center">{{result.nuNumeroFolio}}</td>
+									<td align="center">{{result.nombreImagen}}</td>
+									<td align="center">{{result.codigoPlaca}}</td>
+									<td align="center">{{result.numeroLicencia}}</td>
+									<td align="center">{{result.codigoTipo}}</td>
+									<td align="center">{{result.codigoPlacaOficial}}</td>
+									<td align="center">{{result.nbUtDelegacion}}</td>
+									<td align="center">{{result.nuNumeroFolio}}</td>
+									<td align="center">{{result.fhInfraccion}}</td>
+									<td class="center">
+										<button class="btn btn-danger btn-box-tool" tooltip="Visualizar imagenes asociadas a la boleta"
+												data-toggle="modal" data-target="#myModal" type="button"
+												ng-click="clickDetallesImagenes(result)">
+											<i class="fa fa-columns"></i>
+										</button>
+									</td>
+								</tr>
+								<tr ng-if="(listaImagenes | filter:view.searchImages).length < 1"><td colspan="8" class="text-center"><h4>No se encontraron coincidencias</h4></td></tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="container-fluid">
+							<div class="fixed-table-pagination" style="display:block;">
+								<rows-per-page rows="view.rowsPerPage2" filtro="view.searchImages" array="listaImagenes"></rows-per-page>
+
+								<div class="pull-right pagination">
+									<dir-pagination-controls pagination-id="tabla2" class="pagination"></dir-pagination-controls>
+								</div>
+							</div>
+						</div>
+						<!--<div class="row">
+							<div class="col-md-12"  align="center">
+								<button class="btn btn-danger"  type="button" ng-click="showDetallesChange()">Regresar</button>
+							</div>
+						</div>-->
+					</div>
+				</div>
+                <div class="row">
+                    <div class="col-md-12" align="center">
+                        <button class="btn btn-danger"  type="button" ng-click="showDetallesChange()">Regresar</button>
+                    </div>
+                </div>
+			</div>
+			<div id="myModal"  class="modal fade" role="dialog">
+				<div class="modal-dialog modal-md">
+					<!-- Modal content-->
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+							<h4 class="modal-title">Detalles de la boleta</h4>
+						</div>
+						<div class="modal-body">
+							<div class="row">
+								<div class="col-md-8">
+									<table id="detallesImagenSeleccionada" class="table table-hover header-fixed table-responsive" >
+										<thead>
+											<tr>
+												<th style="text-align: right;">RENGLÓN</th>
+												<th style="text-align: left;">VALOR</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td align="right">VALIDADA:</td>
+												<td align="left">{{imagenSeleccionada.stValidada}}</td>
+											</tr>
+											<tr>
+												<td align="right">LIBERADA:</td>
+												<td align="left">{{imagenSeleccionada.stLiberada}}</td>
+											</tr>
+											<tr>
+												<td align="right">FECHA DE LIBERACIÓN:</td>
+												<td align="left">{{imagenSeleccionada.fechaLiberacion}}</td>
+											</tr>
+											<tr>
+												<td align="right">NUMERO FOLIO:</td>
+												<td align="left">{{imagenSeleccionada.nuNumeroFolio}}</td>
+											</tr>
+											<tr>
+												<td align="right">MARCA DEL VEHÍCULO:</td>
+												<td align="left">{{imagenSeleccionada.vehiculoMarca.nombreMarca}}</td>
+											</tr>
+											<tr>
+												<td align="right">PLACA VEHICULAR:</td>
+												<td align="left">{{imagenSeleccionada.codigoPlaca}}</td>
+											</tr>
+											<tr>
+												<td align="right">NÚMERO DE LICENCIA:</td>
+												<td align="left">{{imagenSeleccionada.numeroLicencia}}</td>
+											</tr>
+											<tr>
+												<td align="right">TIPO DE LICENCIA:</td>
+												<td align="left">{{imagenSeleccionada.codigoTipo}}</td>
+											</tr>
+											<tr>
+												<td align="right">LICENCIA EXPEDIDA EN:</td>
+												<td align="left">{{licenciaExpEnSeleccionada}}</td>
+											</tr>
+											<tr>
+												<td align="right">PLACA EXPEDIDA EN:</td>
+												<td align="left">{{placaExpEnSeleccionada}}</td>
+											</tr>
+											<tr>
+												<td align="right">ARTÍCULO:</td>
+												<td align="left">{{imagenSeleccionada.nuArtInfrac}}</td>
+											</tr>
+											<tr>
+												<td align="right">FRACCIÓN:</td>
+												<td align="left">{{imagenSeleccionada.nuFraccion}}</td>
+											</tr>
+											<tr>
+												<td align="right">INCISO:</td>
+												<td align="left">{{imagenSeleccionada.nuInciso}}</td>
+											</tr>
+											<tr>
+												<td align="right">PÁRRAFO:</td>
+												<td align="left">{{imagenSeleccionada.nuParrafo}}</td>
+											</tr>
+											<tr>
+												<td align="right">UNIDAD TERRITORIAL:</td>
+												<td align="left">{{imagenSeleccionada.nbUtDelegacion}}</td>
+											</tr>
+											<tr>
+												<td align="right">FECHA DE BOLETA:</td>
+												<td align="left">{{imagenSeleccionada.fhInfraccion}}</td>
+											</tr>
+											<tr>
+												<td align="right">PLACA DEL OFICIAL:</td>
+												<td align="left">{{imagenSeleccionada.codigoPlacaOficial}}</td>
+											</tr>
+
+
+										</tbody>
+									</table>
+								</div>
+								<div class="col-md-4">
+									<div class="row">
+										<div class="col-md-12">
+											<p> </p>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-12">
+											<p> </p>
+										</div>
+									</div>
+									<div class="row">
+										<div id="images">
+											<div class="col-md-10">
+												<img ng-src="{{anverso}}" alt="Anverso" style="width: 100px;height: 130px;"
+													 class="center-block">
+											<!--</div>-->
+											<!--<div class="col-md-6">-->
+												<img ng-src="{{reverso}}" alt="Reverso" style="width: 100px;height: 130px;"
+													 class="center-block">
+											</div>
+										</div>
+									</div>
+								<!--	<div id="images">
+										<div class="row">
+											<div class="col-md-8">
+
+											</div>
+										</div>
+										<div class="row">
+											<div>
+
+											</div>
+										</div>
+									</div>-->
+								</div>
+
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+		</form>
+
+	</section>
+	
+	<script type="text/javascript">
+/*		$(function () {
+    		$(".select2").select2();
+		});*/
+    </script>  
+<body>
+</html>

@@ -1,0 +1,99 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Reportes de la aplicación</title>
+</head>
+<body>
+	<div ng-show="error" class="alert alert-warning">
+		{{error.message}}
+	</div>
+	
+		<section class="content-header">
+			<h1>Reportes de la aplicación</h1>
+			<ol class="breadcrumb">
+				<li><a><i class="fa fa-book"></i>Reportes</a></li>
+				<li class="active">Reportes Generales</li>
+			</ol>
+		</section>
+	
+	<!-- Main content -->
+	<section class="content">
+		
+		<div ng-show="!stPermisoAcceso && tieneOperaciones"
+			 class="col-md-offset-1 col-md-10 alert alert-teclo"
+			 style="margin-bottom: 0">
+			<strong>No tiene ningún reporte configurado para visualizar</strong>
+		</div>
+		
+		
+		<div class="row" ng-show="stPermisoAcceso">
+			<div class="col-md-10 col-md-offset-1">
+				<div class="box box-danger">
+					<!-- collapsed-box para mostrar minimisado-->
+					<div class="box-header with-border text-center">
+						
+						<h3 class="box-title">
+							Informe
+							<span  ng-show="nombreReporte != ''">
+								:
+							</span>
+							<span class="box-title_resaltado"  ng-show="nombreReporte != ''">
+								{{nombreReporte}}
+							</span>
+						</h3>
+						
+						<div class="box-tools pull-right">
+							<button id="minusButton0" type="button" class="btn btn-box-tool"
+									ng-if="mostrarBotonMinus" data-widget="collapse"
+									ng-click="mostrarPanelTipoReporte('minPanel','','')">
+								<i class="fa fa-minus"></i>
+								<!--fa-plus icono mas-->
+							</button>
+							<button id="returnButton" type="button" class="btn btn-box-tool"
+									ng-if="!mostrarBotonMinus" data-widget="collapse"
+									ng-click="mostrarPanelTipoReporte('REGRESAR','','')">
+								<i class="fa fa-plus" aria-hidden="true"></i>
+								<!-- fa fa-reply -->
+							</button>
+						</div>
+					</div>
+					<div uib-collapse="isCollapsed">
+						<div class="box-body">
+							<div ng-repeat="listaagr in listaAgrupada track by $index">
+								<div class="row col-md-10 col-md-offset-1">
+									<div ng-repeat="lista in listaagr track by $index"  class="col-md-4">
+										<div class="box collapsed-box">
+											<div class="box-header text-center">
+												<h5>
+													<b>{{lista.nombre}}</b><br />
+													<button id="minusButton" type="button"
+															class="btn btn-box-tool" data-widget="collapse"
+															ng-click="faFaReporteBit=cambiaIcono(faFaReporteBit)">
+														<i class="{{faFaReporteBit}}"
+														   ng-init="faFaReporteBit='fa fa-chevron-down'"
+														   aria-hidden="true"></i>
+													</button>
+												</h5>
+											</div>
+											<div class="box-body">
+												<div ng-repeat="subReporte in lista.subReportes">
+													<a href="" ng-click="mostrarPanelTipoReporte(subReporte.nombre,subReporte.ruta,subReporte.nombre)">{{subReporte.nombre}}</a>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<div ng-include="direccionCatalogos"></div>
+			</div>
+		</div>
+	</section>
+</body>
+</html>
